@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MediumText" parent="Base.TextAppearance.AppCompat.Large">
+
+        <item name="textColor">@colorAccent</item>
+        <item name="android:layout_gravity">center</item>
+
+    </style>
+
 </resources>

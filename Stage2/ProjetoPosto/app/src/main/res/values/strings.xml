@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Projeto Posto</string>
+    <string name="app_name">Controle de Posto</string>
+    <string name="tagFrameVeiculos">Frame_Veiculos</string>
+    <string name="tagFrameAbastecimentos">Frame_Abastecimentos</string>
+    <string name="veiculos">Veículos</string>
+    <string name="abastecimentos">Abastecimentos</string>
+    <string name="km_rodada">KM Rodada:</string>
+    <string name="km_atual">KM Atual:</string>
 </resources>
