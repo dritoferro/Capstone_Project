@@ -5,4 +5,6 @@
     <dimen name="margin_25">25dp</dimen>
     <dimen name="margin_275">275dp</dimen>
     <dimen name="margin_170">170dp</dimen>
+    <dimen name="dimen_40">40dp</dimen>
+    <dimen name="dimen_20">20dp</dimen>
 </resources>

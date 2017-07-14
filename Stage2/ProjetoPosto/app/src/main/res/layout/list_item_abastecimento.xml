@@ -1,67 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_ten">
+    android:layout_marginStart="@dimen/margin_ten">
 
     <TextView
-        android:id="@+id/text_abast_data"
+        android:id="@+id/text_list_abast_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        style="@style/MediumText"
         tools:text="04/07/2017"/>
 
     <TextView
-        android:id="@+id/text_abast_valor"
+        android:id="@+id/text_list_abast_valor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_ten"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_gravity="center_horizontal"
+        android:layout_toEndOf="@+id/text_list_abast_data"
+        style="@style/MediumText"
         tools:text="R$ 60,00"/>
 
     <TextView
-        android:id="@+id/text_abast_posto"
+        android:id="@+id/text_list_abast_posto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_ten"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_gravity="end"
+        style="@style/MediumText"
+        android:layout_toEndOf="@+id/text_list_abast_valor"
         tools:text="Posto Shell"/>
 
     <TextView
+        android:id="@+id/textKmAtual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_25"
-        android:layout_marginStart="@dimen/margin_ten"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:text="@string/km_atual"/>
+        style="@style/MediumText"
+        android:text="@string/km_atual"
+        android:layout_below="@+id/text_list_abast_posto"/>
 
     <TextView
-        android:id="@+id/text_abast_km_atual"
+        android:id="@+id/text_list_abast_km_atual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_25"
-        android:layout_marginStart="95dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        style="@style/MediumText"
+        android:layout_toEndOf="@+id/textKmAtual"
+        android:layout_below="@+id/text_list_abast_valor"
         tools:text="15.000"/>
 
     <TextView
+        android:id="@+id/textKmRodada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_25"
-        android:layout_marginStart="@dimen/margin_170"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:text="@string/km_rodada"/>
+        style="@style/MediumText"
+        android:text="@string/km_rodada"
+        android:layout_below="@+id/text_list_abast_posto"
+        android:layout_toEndOf="@+id/text_list_abast_km_atual"/>
 
     <TextView
-        android:id="@+id/text_abast_km_rodada"
+        android:id="@+id/text_list_abast_km_rodada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_25"
-        android:layout_marginStart="@dimen/margin_275"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        style="@style/MediumText"
+        android:layout_below="@+id/text_list_abast_posto"
+        android:layout_toEndOf="@+id/textKmRodada"
         tools:text="200"/>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

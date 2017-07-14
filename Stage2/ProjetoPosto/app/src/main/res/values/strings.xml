@@ -6,4 +6,8 @@
     <string name="abastecimentos">Abastecimentos</string>
     <string name="km_rodada">KM Rodada:</string>
     <string name="km_atual">KM Atual:</string>
+    <string name="veiculo_name_hint">Apelido do veículo</string>
+    <string name="veiculo_comb2">Combustível 2</string>
+    <string name="veiculo_comb1">Combustível 1</string>
+    <string name="text_veiculo_imagem">Imagem do Veículo</string>
 </resources>

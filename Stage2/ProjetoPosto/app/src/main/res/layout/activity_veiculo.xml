@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_ten">
+
+    <TextView
+        android:id="@+id/textViewVeiculos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MediumText"
+        android:text="@string/veiculos"/>
+
+    <Spinner
+        android:id="@+id/spinner_veiculos"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_40"
+        android:layout_toEndOf="@+id/textViewVeiculos"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/margin_ten" />
+
+    <EditText
+        android:id="@+id/edt_veiculo_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_veiculos"
+        android:layout_margin="@dimen/dimen_20"
+        android:hint="@string/veiculo_name_hint"/>
+
+    <TextView
+        android:id="@+id/textViewComb1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_veiculo_nome"
+        android:layout_marginTop="@dimen/dimen_20"
+        android:layout_marginStart="@dimen/margin_ten"
+        style="@style/MediumText"
+        android:text="@string/veiculo_comb1"/>
+
+    <Spinner
+        android:id="@+id/spinner_veiculo_comb1"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_40"
+        android:layout_toEndOf="@+id/textViewComb1"
+        android:layout_below="@+id/edt_veiculo_nome"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_ten"/>
+
+    <TextView
+        android:id="@+id/textViewComb2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_veiculo_comb1"
+        android:layout_marginTop="@dimen/dimen_20"
+        android:layout_marginStart="@dimen/margin_ten"
+        style="@style/MediumText"
+        android:text="@string/veiculo_comb2"/>
+
+    <Spinner
+        android:id="@+id/spinner_veiculo_comb2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_40"
+        android:layout_toEndOf="@+id/textViewComb2"
+        android:layout_below="@+id/spinner_veiculo_comb1"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_ten"/>
+
+    <TextView
+        android:id="@+id/textViewImgVeiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_veiculo_comb2"
+        style="@style/MediumText"
+        android:layout_marginTop="@dimen/dimen_20"
+        android:text="@string/text_veiculo_imagem"/>
+
+    <ImageView
+        android:id="@+id/img_veiculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_20"
+        android:layout_below="@+id/textViewImgVeiculo"/>
+
+    <Button
+        android:id="@+id/btn_veiculo_salvar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_veiculo"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_ten"
+        android:text="SALVAR"/>
+
+</RelativeLayout>
