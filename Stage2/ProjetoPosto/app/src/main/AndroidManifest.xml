@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.VeiculoActivity" android:parentActivityName=".view.MainActivity" />
+        <activity android:name=".view.PostoActivity" android:parentActivityName=".view.MainActivity" />
+        <activity android:name=".view.AbastecimentoActivity" android:parentActivityName=".view.MainActivity" />
     </application>
 
 </manifest>

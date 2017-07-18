@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Controle de Posto</string>
-    <string name="tagFrameVeiculos">Frame_Veiculos</string>
-    <string name="tagFrameAbastecimentos">Frame_Abastecimentos</string>
+    <string name="tagFrameVeiculos" translatable="false">Frame_Veiculos</string>
+    <string name="tagFrameAbastecimentos" translatable="false">Frame_Abastecimentos</string>
     <string name="veiculos">Veículos</string>
     <string name="abastecimentos">Abastecimentos</string>
     <string name="km_rodada">KM Rodada:</string>
@@ -10,4 +10,14 @@
     <string name="veiculo_comb2">Combustível 2</string>
     <string name="veiculo_comb1">Combustível 1</string>
     <string name="text_veiculo_imagem">Imagem do Veículo</string>
+    <string name="postos_cadastrados">Postos Cadastrados</string>
+    <string name="posto_name">Nome do Posto</string>
+    <string name="obter_localizacao_posto">Obter Localização</string>
+    <string name="salvar">SALVAR</string>
+    <string name="valor_por_litro">Valor por Litro</string>
+    <string name="mock_data">18/07/2017</string>
+    <string name="escolha_o_veiculo">Escolha o Veículo:</string>
+    <string name="mock_km">15.000</string>
+    <string name="mock_precoLitro">R$ 3,50</string>
+    <string name="postos">Postos</string>
 </resources>

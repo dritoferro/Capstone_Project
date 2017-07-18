@@ -3,6 +3,7 @@ package tagliaferro.adriano.projetoposto.view;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import tagliaferro.adriano.projetoposto.R;
@@ -13,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentListVeiculos mFragmentListVeiculos;
     private FragmentListAbastecimentos mFragmentListAbastecimentos;
     private FragmentManager mFragmentManager;
+
+    private Toolbar mToolbar;
 
 
     @Override
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.frameListVeiculos, mFragmentListVeiculos, getString(R.string.tagFrameVeiculos))
                 .add(R.id.frameListAbastecimentos, mFragmentListAbastecimentos, getString(R.string.tagFrameAbastecimentos))
                 .commit();
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_main_activity);
+        setSupportActionBar(mToolbar);
 
     }
 }

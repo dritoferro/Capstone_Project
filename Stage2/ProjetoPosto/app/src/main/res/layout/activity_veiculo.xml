@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/margin_ten">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_activity_veiculo"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize" />
+
     <TextView
         android:id="@+id/textViewVeiculos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_activity_veiculo"
         style="@style/MediumText"
         android:text="@string/veiculos"/>
 
@@ -16,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_40"
         android:layout_toEndOf="@+id/textViewVeiculos"
+        android:layout_below="@+id/toolbar_activity_veiculo"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="@dimen/margin_ten" />
 
@@ -79,7 +86,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_20"
-        android:layout_below="@+id/textViewImgVeiculo"/>
+        android:layout_below="@+id/textViewImgVeiculo"
+        android:contentDescription="@string/text_veiculo_imagem"/>
 
     <Button
         android:id="@+id/btn_veiculo_salvar"
@@ -87,7 +95,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_veiculo"
         android:layout_alignParentEnd="true"
+        style="@style/MediumText"
         android:layout_margin="@dimen/margin_ten"
-        android:text="SALVAR"/>
+        android:text="@string/salvar"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"/>
 
 </RelativeLayout>

@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context="tagliaferro.adriano.projetoposto.view.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_main_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
