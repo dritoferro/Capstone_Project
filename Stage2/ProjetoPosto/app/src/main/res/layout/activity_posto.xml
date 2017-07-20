@@ -6,7 +6,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_activity_posto"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize" />
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"/>
 
     <TextView
         android:id="@+id/textViewPosto"
@@ -14,14 +15,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_activity_posto"
         style="@style/MediumText"
-        android:text="@string/postos_cadastrados"/>
+        android:text="@string/postos_cadastrados"
+        android:textColor="#ffffff"/>
 
     <Spinner
         android:id="@+id/spinner_postos"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_40"
         android:layout_below="@+id/textViewPosto"
-        android:layout_margin="@dimen/margin_ten"/>
+        android:layout_margin="@dimen/margin_ten"
+        />
 
     <EditText
         android:id="@+id/edt_posto_nome"
@@ -29,7 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_ten"
         android:layout_below="@+id/spinner_postos"
-        android:hint="@string/posto_name"/>
+        android:hint="@string/posto_name"
+        android:textColor="#ffffff"/>
 
     <Spinner
         android:id="@+id/spinner_posto_comb1"
@@ -48,7 +52,8 @@
         android:layout_marginStart="@dimen/dimen_150"
         android:layout_marginEnd="@dimen/margin_ten"
         android:layout_alignParentEnd="true"
-        android:hint="@string/valor_por_litro"/>
+        android:hint="@string/valor_por_litro"
+        android:textColor="#ffffff"/>
 
     <Spinner
         android:id="@+id/spinner_posto_comb2"
@@ -67,7 +72,8 @@
         android:layout_marginStart="@dimen/dimen_150"
         android:layout_marginEnd="@dimen/margin_ten"
         android:layout_alignParentEnd="true"
-        android:hint="@string/valor_por_litro"/>
+        android:hint="@string/valor_por_litro"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/btn_posto_get_location"
