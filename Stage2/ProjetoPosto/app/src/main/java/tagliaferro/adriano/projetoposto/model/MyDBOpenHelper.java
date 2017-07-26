@@ -1,4 +1,4 @@
-package tagliaferro.adriano.projetoposto.model.DBHelper;
+package tagliaferro.adriano.projetoposto.model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
