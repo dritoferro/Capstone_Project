@@ -56,7 +56,7 @@ public class ControleProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
 
-        dbOpenHelper = new MyDBOpenHelper(getContext());
+        dbOpenHelper = MyDBOpenHelper.getInstance(getContext());
         return true;
     }
 
@@ -148,11 +148,13 @@ public class ControleProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        final SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = null;
         int idInserted;
-        Uri mUri;
-
+        Uri mUri = null;
         try {
+            db = dbOpenHelper.getWritableDatabase();
+            db.beginTransaction();
+
             switch (sUriMatcher.match(uri)) {
                 case CODE_VEICULO:
                     idInserted = (int) db.insert(VeiculoContract.tbVeiculo, null, values);
@@ -173,9 +175,10 @@ public class ControleProvider extends ContentProvider {
                     break;
 
                 default:
-                    idInserted = -1;
                     mUri = null;
             }
+        } catch (Exception e) {
+            String t = e.getMessage();
         } finally {
             db.endTransaction();
         }
@@ -185,8 +188,10 @@ public class ControleProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         int rowDeleted = 0;
-        final SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = null;
         try {
+            db = dbOpenHelper.getWritableDatabase();
+            db.beginTransaction();
             switch (sUriMatcher.match(uri)) {
                 case CODE_VEICULO_WITH_ID:
                     rowDeleted = db.delete(VeiculoContract.tbVeiculo, VeiculoContract.Columns.veiculo_id + " = ?", selectionArgs);
@@ -217,16 +222,18 @@ public class ControleProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         int rowUpdated = 0;
-        final SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = null;
         try {
+            db = dbOpenHelper.getWritableDatabase();
+            db.beginTransaction();
             switch (sUriMatcher.match(uri)) {
                 case CODE_VEICULO_WITH_ID:
-                    rowUpdated = db.update(VeiculoContract.tbVeiculo, values, VeiculoContract.Columns.veiculo_id + " = ?", selectionArgs);
+                    rowUpdated = db.update(VeiculoContract.tbVeiculo, values, selection, selectionArgs);
                     db.setTransactionSuccessful();
                     break;
 
                 case CODE_POSTO_WITH_ID:
-                    rowUpdated = db.update(PostoContract.tbPosto, values, PostoContract.Columns.posto_id + " = ?", selectionArgs);
+                    rowUpdated = db.update(PostoContract.tbPosto, values, selection, selectionArgs);
                     db.setTransactionSuccessful();
                     break;
 

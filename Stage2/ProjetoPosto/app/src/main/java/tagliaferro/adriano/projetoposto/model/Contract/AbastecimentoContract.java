@@ -13,7 +13,7 @@ public final class AbastecimentoContract {
 
     public static final class Columns implements BaseColumns{
 
-        public static final String abastecimento_id = "id";
+        public static final String abastecimento_id = "_id";
         public static final String abastecimento_id_veiculo = "veiculo_id";
         public static final String abastecimento_id_posto = "posto_id";
         public static final String abastecimento_comb = "comb";

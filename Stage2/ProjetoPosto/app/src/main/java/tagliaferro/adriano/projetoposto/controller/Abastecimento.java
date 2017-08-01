@@ -1,10 +1,13 @@
 package tagliaferro.adriano.projetoposto.controller;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Adriano2 on 20/07/2017.
  */
 
-public class Abastecimento {
+public class Abastecimento implements Parcelable{
 
     private int abastecimento_id;
     private int abastecimento_veiculo_id;
@@ -14,6 +17,28 @@ public class Abastecimento {
     private String abastecimento_data;
     private String abastecimento_km_atual;
 
+
+    protected Abastecimento(Parcel in) {
+        abastecimento_id = in.readInt();
+        abastecimento_veiculo_id = in.readInt();
+        abastecimento_posto_id = in.readInt();
+        abastecimento_comb = in.readString();
+        abastecimento_valor_litro = in.readString();
+        abastecimento_data = in.readString();
+        abastecimento_km_atual = in.readString();
+    }
+
+    public static final Creator<Abastecimento> CREATOR = new Creator<Abastecimento>() {
+        @Override
+        public Abastecimento createFromParcel(Parcel in) {
+            return new Abastecimento(in);
+        }
+
+        @Override
+        public Abastecimento[] newArray(int size) {
+            return new Abastecimento[size];
+        }
+    };
 
     public int getAbastecimento_id() {
         return abastecimento_id;
@@ -69,5 +94,21 @@ public class Abastecimento {
 
     public void setAbastecimento_km_atual(String abastecimento_km_atual) {
         this.abastecimento_km_atual = abastecimento_km_atual;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(abastecimento_id);
+        dest.writeInt(abastecimento_veiculo_id);
+        dest.writeInt(abastecimento_posto_id);
+        dest.writeString(abastecimento_comb);
+        dest.writeString(abastecimento_valor_litro);
+        dest.writeString(abastecimento_data);
+        dest.writeString(abastecimento_km_atual);
     }
 }

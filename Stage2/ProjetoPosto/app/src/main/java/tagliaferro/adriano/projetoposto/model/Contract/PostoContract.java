@@ -13,7 +13,7 @@ public final class PostoContract {
 
     public static final class Columns implements BaseColumns{
 
-        public static final String posto_id = "id";
+        public static final String posto_id = "_id";
         public static final String posto_nome = "nome";
         public static final String posto_comb1 = "comb1";
         public static final String posto_comb2 = "comb2";

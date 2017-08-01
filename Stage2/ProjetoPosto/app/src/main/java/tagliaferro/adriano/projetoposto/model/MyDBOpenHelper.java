@@ -14,8 +14,8 @@ import tagliaferro.adriano.projetoposto.model.Contract.VeiculoContract;
 
 public class MyDBOpenHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "";
-    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "controleposto";
+    private static final int DB_VERSION = 2;
 
     private static MyDBOpenHelper instance;
 
@@ -26,7 +26,7 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    public MyDBOpenHelper(Context context) {
+    private MyDBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -39,7 +39,25 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(dropTbPosto());
+        db.execSQL(dropTbVeiculo());
+        db.execSQL(dropTbAbastecimento());
+        onCreate(db);
+    }
 
+    private String dropTbVeiculo(){
+        String drop = "DROP TABLE " + VeiculoContract.tbVeiculo;
+        return drop;
+    }
+
+    private String dropTbPosto(){
+        String drop = "DROP TABLE " + PostoContract.tbPosto;
+        return drop;
+    }
+
+    private String dropTbAbastecimento(){
+        String drop = "DROP TABLE " + AbastecimentoContract.tbAbastecimento;
+        return drop;
     }
 
     private String createTableVeiculo(){
@@ -48,7 +66,7 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
                 .append(VeiculoContract.tbVeiculo)
                 .append("(")
                 .append(VeiculoContract.Columns.veiculo_id)
-                .append(" INTEGER PRIMARY KEY AUTO INCREMENT, ")
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(VeiculoContract.Columns.veiculo_nome)
                 .append(" TEXT NOT NULL, ")
                 .append(VeiculoContract.Columns.veiculo_comb1)
@@ -68,7 +86,7 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
                 .append(PostoContract.tbPosto)
                 .append("(")
                 .append(PostoContract.Columns.posto_id)
-                .append(" INTEGER PRIMARY KEY AUTO INCREMENT, ")
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(PostoContract.Columns.posto_nome)
                 .append(" TEXT NOT NULL, ")
                 .append(PostoContract.Columns.posto_comb1)
@@ -92,7 +110,7 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
                 .append(AbastecimentoContract.tbAbastecimento)
                 .append("(")
                 .append(AbastecimentoContract.Columns.abastecimento_id)
-                .append(" INTEGER PRIMARY KEY AUTO INCREMENT, ")
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(AbastecimentoContract.Columns.abastecimento_id_veiculo)
                 .append(" INTEGER NOT NULL, ")
                 .append(AbastecimentoContract.Columns.abastecimento_id_posto)

@@ -1,10 +1,13 @@
 package tagliaferro.adriano.projetoposto.controller;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Adriano2 on 20/07/2017.
  */
 
-public class Posto {
+public class Posto implements Parcelable{
 
     private int posto_id;
     private String posto_nome;
@@ -14,6 +17,30 @@ public class Posto {
     private String posto_valor_comb2;
     private String posto_localizacao;
 
+    public Posto(){}
+
+
+    protected Posto(Parcel in) {
+        posto_id = in.readInt();
+        posto_nome = in.readString();
+        posto_comb1 = in.readString();
+        posto_comb2 = in.readString();
+        posto_valor_comb1 = in.readString();
+        posto_valor_comb2 = in.readString();
+        posto_localizacao = in.readString();
+    }
+
+    public static final Creator<Posto> CREATOR = new Creator<Posto>() {
+        @Override
+        public Posto createFromParcel(Parcel in) {
+            return new Posto(in);
+        }
+
+        @Override
+        public Posto[] newArray(int size) {
+            return new Posto[size];
+        }
+    };
 
     public int getPosto_id() {
         return posto_id;
@@ -69,5 +96,21 @@ public class Posto {
 
     public void setPosto_localizacao(String posto_localizacao) {
         this.posto_localizacao = posto_localizacao;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(posto_id);
+        dest.writeString(posto_nome);
+        dest.writeString(posto_comb1);
+        dest.writeString(posto_comb2);
+        dest.writeString(posto_valor_comb1);
+        dest.writeString(posto_valor_comb2);
+        dest.writeString(posto_localizacao);
     }
 }

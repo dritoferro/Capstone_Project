@@ -21,4 +21,31 @@
     <string name="mock_precoLitro">R$ 3,50</string>
     <string name="postos">Postos</string>
     <string name="escolha_o_posto">Escolha o Posto:</string>
+    <string name="select">Selecione</string>
+    <string name="comb_etanol">Etanol</string>
+    <string name="comb_gasolina">Gasolina</string>
+    <string name="comb_gnv">GNV</string>
+    <string name="comb_diesel">Diesel</string>
+    <string name="add_sucesso">Adicionado com sucesso</string>
+    <string name="up_sucesso">Atualizado com sucesso</string>
+    <string name="excluir">EXCLUIR</string>
+    <string name="warning">Aviso</string>
+    <string name="msg_delete_veiculo">Deseja deletar este veículo ?</string>
+    <string name="yes">Sim</string>
+    <string name="del_sucesso">Excluído com sucesso</string>
+    <string name="erro_update">Algo saiu errado na atualização</string>
+    <string name="nao">Não</string>
+    <string name="sim">Sim</string>
+    <string name="ok">OK</string>
+    <string name="error_veiculo">O nome do veículo está em branco e/ou não há um combustível 1 selecionado.</string>
+    <string name="error_posto">O nome do posto não está preenchido e/ou não foi selecionado ao menos um combustível e informado seu valor</string>
+
+
+    <string-array name="combs">
+        <item>@string/select</item>
+        <item>@string/comb_etanol</item>
+        <item>@string/comb_gasolina</item>
+        <item>@string/comb_gnv</item>
+        <item>@string/comb_diesel</item>
+    </string-array>
 </resources>

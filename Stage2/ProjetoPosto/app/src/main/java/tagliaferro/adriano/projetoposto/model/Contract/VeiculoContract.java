@@ -13,7 +13,7 @@ public final class VeiculoContract {
 
     public static final class Columns implements BaseColumns{
 
-        public static final String veiculo_id = "id";
+        public static final String veiculo_id = "_id";
         public static final String veiculo_nome = "nome";
         public static final String veiculo_comb1 = "comb1";
         public static final String veiculo_comb2 = "comb2";
