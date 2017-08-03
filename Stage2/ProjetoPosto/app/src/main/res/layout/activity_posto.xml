@@ -49,11 +49,11 @@
         android:layout_toEndOf="@+id/spinner_posto_comb1"
         android:layout_below="@+id/edt_posto_nome"
         android:layout_marginTop="@dimen/margin_ten"
-        android:layout_marginStart="@dimen/dimen_150"
         android:layout_marginEnd="@dimen/margin_ten"
         android:layout_alignParentEnd="true"
         android:hint="@string/valor_por_litro"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:inputType="numberDecimal"/>
 
     <Spinner
         android:id="@+id/spinner_posto_comb2"
@@ -69,11 +69,11 @@
         android:layout_toEndOf="@+id/spinner_posto_comb1"
         android:layout_below="@+id/edt_posto_preco_comb1"
         android:layout_marginTop="@dimen/margin_ten"
-        android:layout_marginStart="@dimen/dimen_150"
         android:layout_marginEnd="@dimen/margin_ten"
         android:layout_alignParentEnd="true"
         android:hint="@string/valor_por_litro"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:inputType="numberDecimal"/>
 
     <Button
         android:id="@+id/btn_posto_get_location"
@@ -97,5 +97,16 @@
         style="@style/MediumText"
         android:text="@string/salvar" />
 
+    <Button
+        android:id="@+id/btn_posto_excluir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_posto_get_location"
+        android:layout_margin="@dimen/margin_ten"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorAccent"
+        style="@style/MediumText"
+        android:text="@string/excluir"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

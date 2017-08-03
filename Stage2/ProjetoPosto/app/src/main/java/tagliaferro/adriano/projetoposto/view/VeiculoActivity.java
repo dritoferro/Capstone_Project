@@ -130,6 +130,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
         } else if (v.getId() == btnExcluir.getId()) {
             if (!spinnerVeiculos.getSelectedItem().toString().equals(getString(R.string.select))) {
                 buildAlerts(getString(R.string.warning), getString(R.string.msg_delete_veiculo), ALERT_TYPE_EXCLUIR);
+
             }
         }
     }
@@ -168,7 +169,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        int ret = controller.delete(veiculo);
+                        int ret = controller.delete(veiculo.getVeiculo_id());
                         if (ret != 0) {
                             Toast.makeText(getApplicationContext(), R.string.del_sucesso, Toast.LENGTH_SHORT).show();
                             Intent principal = new Intent(getApplicationContext(), MainActivity.class);

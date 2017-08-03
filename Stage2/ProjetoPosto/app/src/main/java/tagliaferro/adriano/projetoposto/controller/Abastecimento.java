@@ -17,6 +17,8 @@ public class Abastecimento implements Parcelable{
     private String abastecimento_data;
     private String abastecimento_km_atual;
 
+    public Abastecimento(){}
+
 
     protected Abastecimento(Parcel in) {
         abastecimento_id = in.readInt();

@@ -12,7 +12,7 @@ public interface MainController<T> {
 
     int update(T obj);
 
-    int delete(T obj);
+    int delete(int obj);
 
     List<T> query();
 

@@ -39,6 +39,10 @@
     <string name="ok">OK</string>
     <string name="error_veiculo">O nome do veículo está em branco e/ou não há um combustível 1 selecionado.</string>
     <string name="error_posto">O nome do posto não está preenchido e/ou não foi selecionado ao menos um combustível e informado seu valor</string>
+    <string name="msg_exc_posto">Tem certeza que deseja excluir este posto ?</string>
+    <string name="error_abastecimento">Você deve selecionar um veículo, um posto e informar a km atual e o valor do litro</string>
+    <string name="zero_veiculo">Cadastre um veículo primeiro, por favor</string>
+    <string name="zero_posto">Cadastre um posto primeiro, por favor</string>
 
 
     <string-array name="combs">

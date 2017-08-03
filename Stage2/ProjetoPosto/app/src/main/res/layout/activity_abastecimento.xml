@@ -71,11 +71,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner_abastecimento_veiculo"
         android:layout_toEndOf="@+id/textViewKmAtual"
-        android:layout_marginStart="@dimen/dimen_150"
+        android:layout_marginStart="@dimen/dimen_100"
         android:layout_marginTop="@dimen/margin_ten"
         android:layout_marginEnd="@dimen/dimen_20"
         android:hint="@string/mock_km"
-        android:textAlignment="textEnd"/>
+        android:textAlignment="textEnd"
+        android:inputType="number"/>
 
     <TextView
         android:id="@+id/textViewChoosePosto"
@@ -109,10 +110,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner_abastecimento_posto"
         android:layout_toEndOf="@+id/textViewPrecoLitro"
-        android:layout_marginStart="@dimen/dimen_150"
+        android:layout_marginStart="@dimen/dimen_100"
         android:layout_marginEnd="@dimen/dimen_20"
         android:textAlignment="textEnd"
-        android:hint="@string/mock_precoLitro"/>
+        android:hint="@string/mock_precoLitro"
+        android:inputType="numberDecimal"/>
 
     <Button
         android:id="@+id/btn_abastecimento_salvar"

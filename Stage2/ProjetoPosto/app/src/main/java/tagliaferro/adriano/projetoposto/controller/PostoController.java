@@ -74,11 +74,11 @@ public class PostoController implements MainController<Posto> {
     }
 
     @Override
-    public int delete(Posto obj) {
+    public int delete(int obj) {
         int ret = 0;
         try {
-            Uri uriDelete = PostoContract.Columns.getUriWithPostoID(obj.getPosto_id());
-            ret = context.getContentResolver().delete(uriDelete, null, new String[]{String.valueOf(obj.getPosto_id())});
+            Uri uriDelete = PostoContract.Columns.getUriWithPostoID(obj);
+            ret = context.getContentResolver().delete(uriDelete, null, new String[]{String.valueOf(obj)});
 
             return ret;
         } catch (Exception e) {
@@ -104,10 +104,11 @@ public class PostoController implements MainController<Posto> {
         String precoComb2;
         String location;
 
+        Cursor cursor = null;
 
         try {
             Uri uriQuery = PostoContract.Columns.CONTENT_URI;
-            Cursor cursor = context.getContentResolver().query(uriQuery, null, null, null, null);
+            cursor = context.getContentResolver().query(uriQuery, null, null, null, null);
 
             while (cursor.moveToNext()) {
                 posto = new Posto();
@@ -131,6 +132,8 @@ public class PostoController implements MainController<Posto> {
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
+        } finally {
+            cursor.close();
         }
 
         return postos;
@@ -144,7 +147,7 @@ public class PostoController implements MainController<Posto> {
         values.put(PostoContract.Columns.posto_valor_comb1, obj.getPosto_valor_comb1());
         values.put(PostoContract.Columns.posto_valor_comb2, obj.getPosto_valor_comb2());
         values.put(PostoContract.Columns.posto_localizacao, obj.getPosto_localizacao());
-        if (!String.valueOf(obj.getPosto_id()).equals("")) {
+        if (!String.valueOf(obj.getPosto_id()).isEmpty()) {
             values.put(PostoContract.Columns.posto_id, obj.getPosto_id());
         }
         return values;

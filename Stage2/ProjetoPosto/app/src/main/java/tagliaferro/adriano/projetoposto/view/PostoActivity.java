@@ -37,6 +37,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     private Spinner spinnerComb2;
     private Button btnSalvar;
     private Button btnGetLocation;
+    private Button btnExcluir;
 
     private PostoController controller;
 
@@ -69,6 +70,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         spinnerComb2 = (Spinner) findViewById(R.id.spinner_posto_comb2);
         btnSalvar = (Button) findViewById(R.id.btn_posto_salvar);
         btnGetLocation = (Button) findViewById(R.id.btn_posto_get_location);
+        btnExcluir = (Button) findViewById(R.id.btn_posto_excluir);
 
         loadExtra();
 
@@ -77,6 +79,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     private void loadExtra() {
         btnSalvar.setOnClickListener(this);
         btnGetLocation.setOnClickListener(this);
+        btnExcluir.setOnClickListener(this);
         spinnerPostos.setOnItemSelectedListener(this);
 
         combAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.combs));
@@ -115,6 +118,9 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 //Verifica se o posto não existe para ser cadastrado.
                 try {
                     controller.insert(posto);
+                    Toast.makeText(this, getString(R.string.add_sucesso), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 } catch (Exception e) {
                     buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
                 }
@@ -122,6 +128,9 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 //O posto já existe então será realizado um update no mesmo.
                 try {
                     controller.update(posto);
+                    Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 } catch (Exception e) {
                     buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
                 }
@@ -130,6 +139,8 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == btnGetLocation.getId()) {
             //TODO pegar a localização do posto
             isLocationChanged = true;
+        } else if (v.getId() == btnExcluir.getId()) {
+            buildAlerts(getString(R.string.warning), getString(R.string.msg_exc_posto), ALERT_TYPE_EXCLUIR);
         }
     }
 
@@ -144,14 +155,14 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
             edtPrecoComb1.setText(posto.getPosto_valor_comb1());
             edtPrecoComb2.setText(posto.getPosto_valor_comb2());
             location = posto.getPosto_localizacao();
-            //TODO falta fazer o botão de excluir posto.
+            btnExcluir.setVisibility(View.VISIBLE);
         } else {
             edtNome.setText("");
             edtPrecoComb1.setText("");
             edtPrecoComb2.setText("");
             spinnerComb1.setSelection(0);
             spinnerComb2.setSelection(0);
-            //TODO fazer o botão de excluir ficar invisivel.
+            btnExcluir.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -171,7 +182,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
-                        int ret = controller.delete(posto);
+                        int ret = controller.delete(posto.getPosto_id());
                         if (ret != 0) {
                             Toast.makeText(getApplicationContext(), R.string.del_sucesso, Toast.LENGTH_SHORT).show();
                             Intent principal = new Intent(getApplicationContext(), MainActivity.class);

@@ -26,7 +26,7 @@ public class VeiculoController implements MainController<Veiculo> {
 
     @Override
     public void insert(Veiculo obj) {
-        if(checkInputs(obj)) {
+        if (checkInputs(obj)) {
             ContentValues values = mntVeiculo(obj);
 
             try {
@@ -43,10 +43,10 @@ public class VeiculoController implements MainController<Veiculo> {
     }
 
     private boolean checkInputs(Veiculo obj) {
-        if(obj.getVeiculo_nome().isEmpty()){
+        if (obj.getVeiculo_nome().isEmpty()) {
             return false;
         }
-        if(obj.getVeiculo_comb1().equals(context.getString(R.string.select))){
+        if (obj.getVeiculo_comb1().equals(context.getString(R.string.select))) {
             return false;
         }
         return true;
@@ -54,7 +54,7 @@ public class VeiculoController implements MainController<Veiculo> {
 
     @Override
     public int update(Veiculo obj) {
-        if(checkInputs(obj)) {
+        if (checkInputs(obj)) {
             int ret = 0;
             ContentValues values = mntVeiculo(obj);
             try {
@@ -71,12 +71,12 @@ public class VeiculoController implements MainController<Veiculo> {
     }
 
     @Override
-    public int delete(Veiculo obj) {
+    public int delete(int obj) {
         int ret = 0;
         try {
-            Uri uriDelete = VeiculoContract.Columns.getUriWithVeiculoID(obj.getVeiculo_id());
-            ret = context.getContentResolver().delete(uriDelete, null, new String[]{String.valueOf(obj.getVeiculo_id())});
-        } catch (Exception e){
+            Uri uriDelete = VeiculoContract.Columns.getUriWithVeiculoID(obj);
+            ret = context.getContentResolver().delete(uriDelete, null, new String[]{String.valueOf(obj)});
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
         return ret;
@@ -85,32 +85,39 @@ public class VeiculoController implements MainController<Veiculo> {
     @Override
     public List<Veiculo> query() {
         List<Veiculo> veiculos = new ArrayList<>();
-        Uri query = VeiculoContract.Columns.CONTENT_URI;
         Veiculo veiculo;
         int id;
         String nome;
         String comb1;
         String comb2;
         String img;
-        Cursor cursor = context.getContentResolver().query(query, null, null, null, null);
+        Cursor cursor = null;
 
-        while (cursor.moveToNext()) {
+        try {
+            Uri query = VeiculoContract.Columns.CONTENT_URI;
+            cursor = context.getContentResolver().query(query, null, null, null, null);
 
-            id = cursor.getInt(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_id));
-            nome = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_nome));
-            comb1 = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_comb1));
-            comb2 = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_comb2));
-            img = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_img));
+            while (cursor.moveToNext()) {
 
-            veiculo = new Veiculo();
-            veiculo.setVeiculo_id(id);
-            veiculo.setVeiculo_nome(nome);
-            veiculo.setVeiculo_comb1(comb1);
-            veiculo.setVeiculo_comb2(comb2);
-            veiculo.setVeiculo_imagem(img);
-            veiculos.add(veiculo);
+                id = cursor.getInt(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_id));
+                nome = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_nome));
+                comb1 = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_comb1));
+                comb2 = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_comb2));
+                img = cursor.getString(cursor.getColumnIndex(VeiculoContract.Columns.veiculo_img));
+
+                veiculo = new Veiculo();
+                veiculo.setVeiculo_id(id);
+                veiculo.setVeiculo_nome(nome);
+                veiculo.setVeiculo_comb1(comb1);
+                veiculo.setVeiculo_comb2(comb2);
+                veiculo.setVeiculo_imagem(img);
+                veiculos.add(veiculo);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            cursor.close();
         }
-        cursor.close();
         return veiculos;
     }
 
@@ -125,7 +132,7 @@ public class VeiculoController implements MainController<Veiculo> {
         values.put(VeiculoContract.Columns.veiculo_comb1, obj.getVeiculo_comb1());
         values.put(VeiculoContract.Columns.veiculo_comb2, obj.getVeiculo_comb2());
         values.put(VeiculoContract.Columns.veiculo_img, obj.getVeiculo_imagem());
-        if(!String.valueOf(obj.getVeiculo_id()).equals("")){
+        if (!String.valueOf(obj.getVeiculo_id()).isEmpty()) {
             values.put(VeiculoContract.Columns.veiculo_id, obj.getVeiculo_id());
         }
         return values;
