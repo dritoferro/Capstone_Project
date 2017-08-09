@@ -124,7 +124,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                         Intent principal = new Intent(this, MainActivity.class);
                         startActivity(principal);
                     } else {
-                        Toast.makeText(this, R.string.erro_update, Toast.LENGTH_SHORT).show();
+                        buildAlerts(getString(R.string.warning), getString(R.string.erro_update), ALERT_TYPE_ERROR);
                     }
                 }
         } else if (v.getId() == btnExcluir.getId()) {

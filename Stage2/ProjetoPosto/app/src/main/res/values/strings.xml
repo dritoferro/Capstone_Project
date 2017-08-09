@@ -2,6 +2,7 @@
     <string name="app_name">Controle de Posto</string>
     <string name="tagFrameVeiculos" translatable="false">Frame_Veiculos</string>
     <string name="tagFrameAbastecimentos" translatable="false">Frame_Abastecimentos</string>
+    <string name="calendar_dialog_tag" translatable="false">CalendarDialog</string>
     <string name="veiculos">Veículos</string>
     <string name="abastecimentos">Abastecimentos</string>
     <string name="km_rodada">KM Rodada:</string>
@@ -43,6 +44,8 @@
     <string name="error_abastecimento">Você deve selecionar um veículo, um posto e informar a km atual e o valor do litro</string>
     <string name="zero_veiculo">Cadastre um veículo primeiro, por favor</string>
     <string name="zero_posto">Cadastre um posto primeiro, por favor</string>
+    <string name="escolha_o_combustivel">Escolha o combustível:</string>
+    <string name="selecione_data">Selecione uma data</string>
 
 
     <string-array name="combs">

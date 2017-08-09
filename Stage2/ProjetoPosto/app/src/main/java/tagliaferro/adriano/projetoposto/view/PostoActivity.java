@@ -127,10 +127,14 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 //O posto já existe então será realizado um update no mesmo.
                 try {
-                    controller.update(posto);
-                    Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+                    int ret = controller.update(posto);
+                    if(ret != 0){
+                        Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        buildAlerts(getString(R.string.warning), getString(R.string.erro_update), ALERT_TYPE_ERROR);
+                    }
                 } catch (Exception e) {
                     buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
                 }

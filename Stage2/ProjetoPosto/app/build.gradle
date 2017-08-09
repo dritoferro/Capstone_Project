@@ -50,6 +50,10 @@ dependencies {
     //MPAndroidChart for the graphics
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     //End of MPAndroidChart
+
+    //Material Calendar View
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
+    //End of Material Calendar View
 }
 
 //Apply plugin Google Play Services
