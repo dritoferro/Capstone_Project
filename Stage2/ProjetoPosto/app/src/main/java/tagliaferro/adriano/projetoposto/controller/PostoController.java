@@ -147,7 +147,7 @@ public class PostoController implements MainController<Posto> {
         values.put(PostoContract.Columns.posto_valor_comb1, obj.getPosto_valor_comb1());
         values.put(PostoContract.Columns.posto_valor_comb2, obj.getPosto_valor_comb2());
         values.put(PostoContract.Columns.posto_localizacao, obj.getPosto_localizacao());
-        if (!String.valueOf(obj.getPosto_id()).isEmpty()) {
+        if (obj.getPosto_id() != -1) {
             values.put(PostoContract.Columns.posto_id, obj.getPosto_id());
         }
         return values;

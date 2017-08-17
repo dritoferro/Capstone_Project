@@ -77,10 +77,13 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loadExtra() {
+        //Registro dos Listeners para os cliques e toques em botões e spinners
         btnSalvar.setOnClickListener(this);
         btnGetLocation.setOnClickListener(this);
         btnExcluir.setOnClickListener(this);
         spinnerPostos.setOnItemSelectedListener(this);
+        spinnerComb1.setOnItemSelectedListener(this);
+        spinnerComb2.setOnItemSelectedListener(this);
 
         combAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.combs));
         spinnerComb1.setAdapter(combAdapter);
@@ -117,6 +120,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
             if (spinnerPostos.getSelectedItem().toString().equals(getString(R.string.select))) {
                 //Verifica se o posto não existe para ser cadastrado.
                 try {
+                    posto.setPosto_id(-1);
                     controller.insert(posto);
                     Toast.makeText(this, getString(R.string.add_sucesso), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);
@@ -128,7 +132,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 //O posto já existe então será realizado um update no mesmo.
                 try {
                     int ret = controller.update(posto);
-                    if(ret != 0){
+                    if (ret != 0) {
                         Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
@@ -151,22 +155,35 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //Foi necessário pegar a position -1 devido ao fato de que a primeira posição é a palavra "selecione" que não é um veículo.
-        if (position != 0) {
-            posto = postos.get(position - 1);
-            edtNome.setText(posto.getPosto_nome());
-            spinnerComb1.setSelection(combAdapter.getPosition(posto.getPosto_comb1()));
-            spinnerComb2.setSelection(combAdapter.getPosition(posto.getPosto_comb2()));
-            edtPrecoComb1.setText(posto.getPosto_valor_comb1());
-            edtPrecoComb2.setText(posto.getPosto_valor_comb2());
-            location = posto.getPosto_localizacao();
-            btnExcluir.setVisibility(View.VISIBLE);
-        } else {
-            edtNome.setText("");
-            edtPrecoComb1.setText("");
-            edtPrecoComb2.setText("");
-            spinnerComb1.setSelection(0);
-            spinnerComb2.setSelection(0);
-            btnExcluir.setVisibility(View.INVISIBLE);
+        if (parent.getId() == spinnerPostos.getId()) {
+            if (position != 0) {
+                posto = postos.get(position - 1);
+                edtNome.setText(posto.getPosto_nome());
+                spinnerComb1.setSelection(combAdapter.getPosition(posto.getPosto_comb1()));
+                spinnerComb2.setSelection(combAdapter.getPosition(posto.getPosto_comb2()));
+                edtPrecoComb1.setText(posto.getPosto_valor_comb1());
+                edtPrecoComb2.setText(posto.getPosto_valor_comb2());
+                location = posto.getPosto_localizacao();
+                btnExcluir.setVisibility(View.VISIBLE);
+            } else {
+                edtNome.setText("");
+                edtPrecoComb1.setText("");
+                edtPrecoComb2.setText("");
+                spinnerComb1.setSelection(0);
+                spinnerComb2.setSelection(0);
+                btnExcluir.setVisibility(View.INVISIBLE);
+            }
+            //Limpar o campo do valor do litro referente ao combustível 1
+        } else if (parent.getId() == spinnerComb1.getId()) {
+            if (spinnerComb1.getSelectedItem().equals(getString(R.string.select))) {
+                edtPrecoComb1.setText("");
+            }
+
+            //Limpar o campo do valor do litro referente ao combustível 2
+        } else if (parent.getId() == spinnerComb2.getId()) {
+            if(spinnerComb2.getSelectedItem().equals(getString(R.string.select))) {
+                edtPrecoComb2.setText("");
+            }
         }
     }
 

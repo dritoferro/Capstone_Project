@@ -46,6 +46,8 @@
     <string name="zero_posto">Cadastre um posto primeiro, por favor</string>
     <string name="escolha_o_combustivel">Escolha o combustível:</string>
     <string name="selecione_data">Selecione uma data</string>
+    <string name="select_img_veiculo">Deseja usar a camera ou selecionar a foto na galeria ?</string>
+    <string name="erro_insert">Algo saiu errado no cadastro</string>
 
 
     <string-array name="combs">
