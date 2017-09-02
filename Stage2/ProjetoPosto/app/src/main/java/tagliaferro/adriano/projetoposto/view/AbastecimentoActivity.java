@@ -51,6 +51,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
     private EditText edtKmAtual;
     private EditText edtValorLitro;
+    private EditText edtValor;
     private Spinner spinnerVeiculo;
     private Spinner spinnerPosto;
     private Spinner spinnerVeicComb;
@@ -76,6 +77,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     private Veiculo mVeiculo;
     private Posto mPosto;
 
+    private boolean hasVeiculo = true;
+    private boolean isUpdate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
         edtKmAtual = (EditText) findViewById(R.id.edt_abastecimento_kmVeiculo);
         edtValorLitro = (EditText) findViewById(R.id.edt_abastecimento_precoLitro);
+        edtValor = (EditText) findViewById(R.id.edt_abastecimento_valor);
         spinnerVeiculo = (Spinner) findViewById(R.id.spinner_abastecimento_veiculo);
         spinnerPosto = (Spinner) findViewById(R.id.spinner_abastecimento_posto);
         spinnerVeicComb = (Spinner) findViewById(R.id.spinner_abastecimento_veicComb);
@@ -123,30 +128,34 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
             veiculoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, veiculoNameList);
             spinnerVeiculo.setAdapter(veiculoAdapter);
         } else {
+            hasVeiculo = false;
             Toast.makeText(this, R.string.zero_veiculo, Toast.LENGTH_SHORT).show();
             Intent mIntent = new Intent(this, VeiculoActivity.class);
             startActivity(mIntent);
         }
 
-        postosList = postoController.query();
-        //Verifica se há postos cadastrados, caso não haja, redireciona para tela de cadastro.
-        if (!postosList.isEmpty()) {
-            postoNameList.add(getString(R.string.select));
-            for (Posto p : postosList) {
-                postoNameList.add(p.getPosto_nome());
+        if (hasVeiculo) {
+            postosList = postoController.query();
+            //Verifica se há postos cadastrados, caso não haja, redireciona para tela de cadastro.
+            if (!postosList.isEmpty()) {
+                postoNameList.add(getString(R.string.select));
+                for (Posto p : postosList) {
+                    postoNameList.add(p.getPosto_nome());
+                }
+                postoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, postoNameList);
+                spinnerPosto.setAdapter(postoAdapter);
+            } else {
+                Toast.makeText(this, R.string.zero_posto, Toast.LENGTH_SHORT).show();
+                Intent mIntent = new Intent(this, PostoActivity.class);
+                startActivity(mIntent);
             }
-            postoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, postoNameList);
-            spinnerPosto.setAdapter(postoAdapter);
-        } else {
-            Toast.makeText(this, R.string.zero_posto, Toast.LENGTH_SHORT).show();
-            Intent mIntent = new Intent(this, PostoActivity.class);
-            startActivity(mIntent);
         }
         veicCombList.add(getString(R.string.select));
         veicCombAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, veicCombList);
         spinnerVeicComb.setAdapter(veicCombAdapter);
         if (mAbastecimento != null) {
             //Preenche os campos, pois é uma alteração.
+            isUpdate = true;
             btnData.setText(mAbastecimento.getAbastecimento_data());
             edtKmAtual.setText(mAbastecimento.getAbastecimento_km_atual());
             edtValorLitro.setText(mAbastecimento.getAbastecimento_valor_litro());
@@ -211,13 +220,15 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 //if mAbastecimento igual a null, então é um novo abastecimento.
                 if (mAbastecimento == null) {
                     mAbastecimento = new Abastecimento();
+                    isUpdate = false;
                     buildAbastecimento();
                     AbastController.insert(mAbastecimento);
                 } else {
+                    isUpdate = true;
                     //Aqui é uma alteração de um abastecimento, cuidado para não perder o id.
                     buildAbastecimento();
                     int ret = AbastController.update(mAbastecimento);
-                    if (ret != 0){
+                    if (ret != 0) {
                         Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
                         Intent principal = new Intent(this, MainActivity.class);
                         startActivity(principal);
@@ -244,6 +255,10 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         mAbastecimento.setAbastecimento_posto_id(mPosto != null ? mPosto.getPosto_id() : null);
         mAbastecimento.setAbastecimento_valor_litro(edtValorLitro.getText().toString());
         mAbastecimento.setAbastecimento_data(btnData.getText().toString());
+        mAbastecimento.setAbastecimento_valor(edtValor.getText().toString());
+        if(!isUpdate){
+            mAbastecimento.setAbastecimento_id(-1);
+        }
     }
 
     @Override

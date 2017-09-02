@@ -11,8 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import tagliaferro.adriano.projetoposto.R;
+import tagliaferro.adriano.projetoposto.controller.Updates;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Updates {
 
     //Criação dos atributos de Fragment e outros necessários para exibição da Activity
     private FragmentListVeiculos mFragmentListVeiculos;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mFragmentListVeiculos = new FragmentListVeiculos();
         mFragmentListAbastecimentos = new FragmentListAbastecimentos();
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction()
                 .add(R.id.frameListVeiculos, mFragmentListVeiculos, getString(R.string.tagFrameVeiculos))
@@ -67,5 +67,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent newAbast = new Intent(this, AbastecimentoActivity.class);
         startActivity(newAbast);
+    }
+
+    @Override
+    public void updateListAbastecimentos(int id_veiculo) {
+        Bundle args = new Bundle();
+        args.putInt(getString(R.string.update_abast_key), id_veiculo);
+        mFragmentListAbastecimentos = new FragmentListAbastecimentos();
+        mFragmentListAbastecimentos.setArguments(args);
+        mFragmentManager.beginTransaction()
+                .replace(R.id.frameListAbastecimentos, mFragmentListAbastecimentos, getString(R.string.tagFrameAbastecimentos))
+                .commit();
     }
 }

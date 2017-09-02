@@ -118,8 +118,7 @@ public class ControleProvider extends ContentProvider {
             case CODE_ABASTECIMENTO_WITH_VEICID:
                 cursor = dbOpenHelper.getReadableDatabase().query(
                         AbastecimentoContract.tbAbastecimento,
-                        null, AbastecimentoContract.Columns.abastecimento_id_veiculo + " = ?",
-                        selectionArgs, null, null, null
+                        null, selection, selectionArgs, null, null, null
                 );
                 break;
 

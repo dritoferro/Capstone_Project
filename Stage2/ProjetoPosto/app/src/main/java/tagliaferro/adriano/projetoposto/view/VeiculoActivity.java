@@ -2,7 +2,6 @@ package tagliaferro.adriano.projetoposto.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -106,6 +104,12 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
         options.override(width, height);
     }
 
+    @Override
+    protected void onDestroy() {
+        outputFileUri = null;
+        super.onDestroy();
+    }
+
     private void loadExtra() {
         try {
             combs = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.combs)));
@@ -141,7 +145,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
             if (outputFileUri != null) {
                 veiculo.setVeiculo_imagem(outputFileUri.toString());
             } else {
-                veiculo.setVeiculo_imagem("teste");
+                veiculo.setVeiculo_imagem(getString(R.string.teste));
             }
             //Aqui é para salvar as info do veículo.
             if (spinnerVeiculos.getSelectedItem().toString().equals(getString(R.string.select))) {
@@ -187,8 +191,10 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
             edtNome.setText(veiculo.getVeiculo_nome());
             spinnerComb1.setSelection(combs.getPosition(veiculo.getVeiculo_comb1()));
             spinnerComb2.setSelection(combs.getPosition(veiculo.getVeiculo_comb2()));
-            if (!veiculo.getVeiculo_imagem().equals("teste")) {
-                Glide.with(this).load(veiculo.getVeiculo_imagem()).into(imgVeiculo);
+            if (!veiculo.getVeiculo_imagem().equals(getString(R.string.teste))) {
+                Glide.with(this).load(veiculo.getVeiculo_imagem()).apply(options).into(imgVeiculo);
+            } else {
+                Glide.with(this).load(R.drawable.sample).apply(options).into(imgVeiculo);
             }
             btnExcluir.setVisibility(View.VISIBLE);
         } else {
@@ -233,7 +239,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
         } else if (alert_type == ALERT_TYPE_ERROR) {
             ask.setNeutralButton(R.string.ok, null);
         } else if (alert_type == ALERT_TYPE_PHOTO) {
-            ask.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+            ask.setPositiveButton(R.string.btn_camera, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (!edtNome.getText().toString().isEmpty()) {
@@ -244,12 +250,12 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
                         }
                     } else {
-                        buildAlerts(getString(R.string.warning), "O nome do veículo deve ser preenchido primeiro", ALERT_TYPE_ERROR);
+                        buildAlerts(getString(R.string.warning), getString(R.string.error_nome_veiculo), ALERT_TYPE_ERROR);
                     }
                 }
             });
 
-            ask.setNegativeButton("Galeria", new DialogInterface.OnClickListener() {
+            ask.setNegativeButton(R.string.btn_galeria, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //TODO implementar a função de pegar a foto na galeria.

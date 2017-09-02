@@ -139,6 +139,32 @@ public class PostoController implements MainController<Posto> {
         return postos;
     }
 
+    public Posto getPostoByID(int id){
+        Cursor cursor = null;
+        try {
+            Posto posto = new Posto();
+            Uri postoUri = PostoContract.Columns.getUriWithPostoID(id);
+            cursor = context.getContentResolver().query(postoUri, null, null, null, null);
+            if(cursor.moveToFirst()){
+                posto.setPosto_id(id);
+                posto.setPosto_nome(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_nome)));
+                posto.setPosto_localizacao(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_localizacao)));
+                posto.setPosto_comb1(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_valor_comb1)));
+                posto.setPosto_comb2(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_comb2)));
+                posto.setPosto_valor_comb1(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_valor_comb1)));
+                posto.setPosto_valor_comb2(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_valor_comb2)));
+            }
+
+            return posto;
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if(cursor != null){
+                cursor.close();
+            }
+        }
+    }
+
     public ContentValues mntPosto(Posto obj) {
         ContentValues values = new ContentValues();
         values.put(PostoContract.Columns.posto_nome, obj.getPosto_nome());

@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Adriano2 on 20/07/2017.
  */
 
-public class Veiculo implements Parcelable{
+public class Veiculo implements Parcelable {
 
     private int veiculo_id;
     private String veiculo_nome;
@@ -15,7 +15,8 @@ public class Veiculo implements Parcelable{
     private String veiculo_comb2;
     private String veiculo_imagem;
 
-    public Veiculo(){}
+    public Veiculo() {
+    }
 
 
     protected Veiculo(Parcel in) {
@@ -37,6 +38,7 @@ public class Veiculo implements Parcelable{
             return new Veiculo[size];
         }
     };
+
 
     public int getVeiculo_id() {
         return veiculo_id;

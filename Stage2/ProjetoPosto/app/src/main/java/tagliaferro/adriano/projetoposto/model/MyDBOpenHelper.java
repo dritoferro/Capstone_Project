@@ -15,7 +15,7 @@ import tagliaferro.adriano.projetoposto.model.Contract.VeiculoContract;
 public class MyDBOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "controleposto";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     private static MyDBOpenHelper instance;
 
@@ -116,6 +116,8 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
                 .append(AbastecimentoContract.Columns.abastecimento_id_posto)
                 .append(" INTEGER NOT NULL, ")
                 .append(AbastecimentoContract.Columns.abastecimento_comb)
+                .append(" TEXT NOT NULL, ")
+                .append(AbastecimentoContract.Columns.abastecimento_valor)
                 .append(" TEXT NOT NULL, ")
                 .append(AbastecimentoContract.Columns.abastecimento_valor_litro)
                 .append(" TEXT NOT NULL, ")

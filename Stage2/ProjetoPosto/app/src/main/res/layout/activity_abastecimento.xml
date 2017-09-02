@@ -65,8 +65,8 @@
             style="@style/MediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_15"
             android:layout_below="@+id/spinner_abastecimento_veiculo"
+            android:layout_marginTop="@dimen/dimen_15"
             android:text="@string/escolha_o_combustivel" />
 
         <Spinner
@@ -102,11 +102,32 @@
             android:textAlignment="textEnd" />
 
         <TextView
-            android:id="@+id/textViewChoosePosto"
+            android:id="@+id/textViewAbastValor"
             style="@style/MediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewKmAtual"
+            android:layout_marginTop="@dimen/margin_25"
+            android:text="@string/valor" />
+
+        <EditText
+            android:id="@+id/edt_abastecimento_valor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edt_abastecimento_kmVeiculo"
+            android:layout_marginEnd="@dimen/dimen_20"
+            android:layout_marginStart="@dimen/dimen_130"
+            android:layout_toEndOf="@+id/textViewAbastValor"
+            android:hint="@string/exemplo_valor"
+            android:inputType="numberDecimal"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/textViewChoosePosto"
+            style="@style/MediumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewAbastValor"
             android:layout_marginTop="@dimen/margin_25"
             android:text="@string/escolha_o_posto" />
 
@@ -115,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_40"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/edt_abastecimento_kmVeiculo"
+            android:layout_below="@+id/edt_abastecimento_valor"
             android:layout_margin="@dimen/margin_ten"
             android:layout_toEndOf="@+id/textViewChoosePosto" />
 

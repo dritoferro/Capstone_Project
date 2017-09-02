@@ -11,8 +11,8 @@ public class UriContract {
     public static final String PATH_VEICULO = "veiculo";
     public static final String PATH_POSTO = "posto";
     public static final String PATH_ABASTECIMENTO = "abastecimento";
-    public static final String PATH_ABASTECIMENTO_WITH_VEICULO = "abastecimento/veiculo_id";
-    public static final String PATH_ABASTECIMENTO_WITH_POSTO = "abastecimento/posto_id";
+    public static final String PATH_ABASTECIMENTO_WITH_VEICULO = "abastecimento_veiculo_id";
+    public static final String PATH_ABASTECIMENTO_WITH_POSTO = "abastecimento_posto_id";
 
     public static final String CONTENT_AUTHORITY = "tagliaferro.adriano.projetoposto";
 

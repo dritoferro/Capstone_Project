@@ -9,17 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import tagliaferro.adriano.projetoposto.R;
+import tagliaferro.adriano.projetoposto.controller.Abastecimento;
+import tagliaferro.adriano.projetoposto.controller.AbastecimentoController;
+import tagliaferro.adriano.projetoposto.controller.AbastecimentosAdapter;
+import tagliaferro.adriano.projetoposto.controller.OnDataSelected;
 
 /**
  * Created by Adriano2 on 13/07/2017.
  */
 
-public class FragmentListAbastecimentos extends Fragment {
+public class FragmentListAbastecimentos extends Fragment implements OnDataSelected {
 
     //Criação dos atributos para lidar com a RecyclerView
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private List<Abastecimento> mAbastecimentosList;
+    private AbastecimentoController abastController;
+    private AbastecimentosAdapter abastAdapter;
 
     @Nullable
     @Override
@@ -37,5 +47,25 @@ public class FragmentListAbastecimentos extends Fragment {
 
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        int idVeiculo = getArguments() != null ? getArguments().getInt(getString(R.string.update_abast_key)) : -1;
+        abastController = new AbastecimentoController(getActivity());
+
+        if (idVeiculo != -1) {
+            mAbastecimentosList = abastController.query(idVeiculo);
+            if (!mAbastecimentosList.isEmpty()) {
+                abastAdapter = new AbastecimentosAdapter(getActivity(), mAbastecimentosList, this);
+                mRecyclerView.setAdapter(abastAdapter);
+            }
+        }
+    }
+
+    @Override
+    public void onDataSelected(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongDataSelected(View view, int position) {
+
     }
 }

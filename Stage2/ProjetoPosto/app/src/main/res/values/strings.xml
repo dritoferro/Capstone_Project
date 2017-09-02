@@ -48,6 +48,13 @@
     <string name="selecione_data">Selecione uma data</string>
     <string name="select_img_veiculo">Deseja usar a camera ou selecionar a foto na galeria ?</string>
     <string name="erro_insert">Algo saiu errado no cadastro</string>
+    <string name="teste">teste</string>
+    <string name="error_nome_veiculo">O nome do veículo deve ser preenchido primeiro</string>
+    <string name="btn_camera">Camera</string>
+    <string name="btn_galeria">Galeria</string>
+    <string name="valor">Valor:</string>
+    <string name="exemplo_valor">R$ 50,00</string>
+    <string name="update_abast_key">veiculo_abast_key</string>
 
 
     <string-array name="combs">

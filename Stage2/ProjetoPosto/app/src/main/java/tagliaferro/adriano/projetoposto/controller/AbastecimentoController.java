@@ -44,10 +44,11 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         values.put(AbastecimentoContract.Columns.abastecimento_data, obj.getAbastecimento_data());
         values.put(AbastecimentoContract.Columns.abastecimento_km_atual, obj.getAbastecimento_km_atual());
         values.put(AbastecimentoContract.Columns.abastecimento_id_veiculo, obj.getAbastecimento_veiculo_id());
-        values.put(AbastecimentoContract.Columns.abastecimento_id_posto, obj.getAbastecimento_id());
+        values.put(AbastecimentoContract.Columns.abastecimento_id_posto, obj.getAbastecimento_posto_id());
         values.put(AbastecimentoContract.Columns.abastecimento_valor_litro, obj.getAbastecimento_valor_litro());
         values.put(AbastecimentoContract.Columns.abastecimento_comb, obj.getAbastecimento_comb());
-        if (!String.valueOf(obj.getAbastecimento_id()).isEmpty()) {
+        values.put(AbastecimentoContract.Columns.abastecimento_valor, obj.getAbastecimento_valor());
+        if (obj.getAbastecimento_id() != -1) {
             values.put(AbastecimentoContract.Columns.abastecimento_id, obj.getAbastecimento_id());
         }
         return values;
@@ -70,6 +71,9 @@ public class AbastecimentoController implements MainController<Abastecimento> {
             return false;
         }
         if(obj.getAbastecimento_valor_litro().isEmpty()){
+            return false;
+        }
+        if(obj.getAbastecimento_valor().isEmpty()){
             return false;
         }
         return true;
@@ -135,7 +139,6 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         List<Abastecimento> abastecimentos = new ArrayList<>();
 
         Cursor cursor = null;
-
         try {
             Uri uriQuery = AbastecimentoContract.Columns.getUriWithVeicID(VeiculoID);
             cursor = context.getContentResolver().query(uriQuery, null, AbastecimentoContract.Columns.abastecimento_id_veiculo + " = ?", new String[]{String.valueOf(VeiculoID)}, null);
@@ -145,10 +148,32 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         } finally {
-            cursor.close();
+            if(cursor != null){
+                cursor.close();
+            }
         }
 
         return abastecimentos;
+    }
+
+    public Abastecimento getAbastByID(int id){
+        Cursor cursor = null;
+        try {
+            Abastecimento mAbastecimento = null;
+            Uri uriAbast = AbastecimentoContract.Columns.getUriWithAbastID(id);
+            cursor = context.getContentResolver().query(uriAbast, null, null, null, null);
+            if(cursor.moveToFirst()){
+                mAbastecimento = abastFromCursor(cursor);
+            }
+
+            return mAbastecimento;
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if(cursor != null){
+                cursor.close();
+            }
+        }
     }
 
     public Abastecimento abastFromCursor(Cursor cursor) {
@@ -156,6 +181,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         String data;
         String kmAtual;
         String valorLitro;
+        String valor;
         int idPosto;
         int idVeiculo;
         int idAbast;
@@ -166,6 +192,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         data = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_data));
         kmAtual = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_km_atual));
         valorLitro = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_valor_litro));
+        valor = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_valor));
 
         abast = new Abastecimento();
         abast.setAbastecimento_id(idAbast);
@@ -174,6 +201,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         abast.setAbastecimento_data(data);
         abast.setAbastecimento_km_atual(kmAtual);
         abast.setAbastecimento_valor_litro(valorLitro);
+        abast.setAbastecimento_valor(valor);
 
         return abast;
     }

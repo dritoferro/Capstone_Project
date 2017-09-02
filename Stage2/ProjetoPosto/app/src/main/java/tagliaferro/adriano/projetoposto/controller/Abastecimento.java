@@ -13,6 +13,7 @@ public class Abastecimento implements Parcelable{
     private int abastecimento_veiculo_id;
     private int abastecimento_posto_id;
     private String abastecimento_comb;
+    private String abastecimento_valor;
     private String abastecimento_valor_litro;
     private String abastecimento_data;
     private String abastecimento_km_atual;
@@ -25,6 +26,7 @@ public class Abastecimento implements Parcelable{
         abastecimento_veiculo_id = in.readInt();
         abastecimento_posto_id = in.readInt();
         abastecimento_comb = in.readString();
+        setAbastecimento_valor(in.readString());
         abastecimento_valor_litro = in.readString();
         abastecimento_data = in.readString();
         abastecimento_km_atual = in.readString();
@@ -109,8 +111,17 @@ public class Abastecimento implements Parcelable{
         dest.writeInt(abastecimento_veiculo_id);
         dest.writeInt(abastecimento_posto_id);
         dest.writeString(abastecimento_comb);
+        dest.writeString(abastecimento_valor);
         dest.writeString(abastecimento_valor_litro);
         dest.writeString(abastecimento_data);
         dest.writeString(abastecimento_km_atual);
+    }
+
+    public String getAbastecimento_valor() {
+        return abastecimento_valor;
+    }
+
+    public void setAbastecimento_valor(String abastecimento_valor) {
+        this.abastecimento_valor = abastecimento_valor;
     }
 }
