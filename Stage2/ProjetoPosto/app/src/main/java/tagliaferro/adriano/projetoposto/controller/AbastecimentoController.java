@@ -161,7 +161,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         try {
             Abastecimento mAbastecimento = null;
             Uri uriAbast = AbastecimentoContract.Columns.getUriWithAbastID(id);
-            cursor = context.getContentResolver().query(uriAbast, null, null, null, null);
+            cursor = context.getContentResolver().query(uriAbast, null, null, new String[]{String.valueOf(id)}, null);
             if(cursor.moveToFirst()){
                 mAbastecimento = abastFromCursor(cursor);
             }

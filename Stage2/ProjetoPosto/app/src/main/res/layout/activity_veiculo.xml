@@ -93,7 +93,7 @@
             android:layout_below="@+id/textViewImgVeiculo"
             android:layout_marginTop="@dimen/dimen_20"
             android:layout_marginStart="@dimen/dimen_40"
-            android:layout_marginEnd="@dimen/dimen_40"
+            android:layout_marginEnd="@dimen/dimen_75"
             android:layout_toStartOf="@+id/btn_veiculo_salvar"
             android:contentDescription="@string/text_veiculo_imagem"
             android:scaleType="fitXY"

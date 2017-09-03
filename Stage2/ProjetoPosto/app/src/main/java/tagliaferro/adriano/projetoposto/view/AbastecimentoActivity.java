@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -73,7 +74,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     private VeiculoController veicController;
     private PostoController postoController;
 
-    private static Abastecimento mAbastecimento;
+    protected static Abastecimento mAbastecimento;
     private Veiculo mVeiculo;
     private Posto mPosto;
 
@@ -178,7 +179,8 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
             }
         } else {
             //Caso seja um novo cadastro, coloque a data atual no botão de data.
-            dataAbastecimento = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()).format(new Date());
+            //dataAbastecimento = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()).format(new Date());
+            dataAbastecimento = DateFormat.getDateInstance(DateFormat.DATE_FIELD, Locale.getDefault()).format(new Date());
             btnData.setText(dataAbastecimento);
         }
 
@@ -186,9 +188,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         mAbastecimento = null;
         dataAbastecimento = null;
-        super.onDestroy();
     }
 
     @Override
@@ -238,6 +240,8 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 }
             } catch (Exception e) {
                 if (e.getMessage().equals(getString(R.string.add_sucesso))) {
+                    mAbastecimento = null;
+                    dataAbastecimento = null;
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     Intent principal = new Intent(this, MainActivity.class);
                     startActivity(principal);
@@ -256,7 +260,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         mAbastecimento.setAbastecimento_valor_litro(edtValorLitro.getText().toString());
         mAbastecimento.setAbastecimento_data(btnData.getText().toString());
         mAbastecimento.setAbastecimento_valor(edtValor.getText().toString());
-        if(!isUpdate){
+        if (!isUpdate) {
             mAbastecimento.setAbastecimento_id(-1);
         }
     }
@@ -278,6 +282,11 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                     veicCombList.add(mVeiculo.getVeiculo_comb2());
                 }
                 veicCombAdapter.notifyDataSetChanged();
+                if (mVeiculo.getVeiculo_imagem().equals(getString(R.string.teste))) {
+                    Glide.with(this).load(R.drawable.sample).into(imgVeiculo);
+                } else {
+                    Glide.with(this).load(mVeiculo.getVeiculo_imagem()).into(imgVeiculo);
+                }
 
             } else {
                 mVeiculo = null;
@@ -320,7 +329,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
     public static class SimpleCalendarDialogFragment extends AppCompatDialogFragment implements OnDateSelectedListener {
 
-        private DateFormat format = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+        private DateFormat format = SimpleDateFormat.getDateInstance(DateFormat.DATE_FIELD, Locale.getDefault());
 
         @NonNull
         @Override

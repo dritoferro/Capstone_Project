@@ -47,12 +47,19 @@ public class AbastecimentosAdapter extends RecyclerView.Adapter {
 
         Posto posto = postoController.getPostoByID(abast.getAbastecimento_posto_id());
         Double kmRodada = 0.0;
-        if (abast.getAbastecimento_id() != 0) {
-            Abastecimento abastBefore = abastController.getAbastByID(abast.getAbastecimento_id() - 1);
-
-            Double kmAtual = Double.parseDouble(abast.getAbastecimento_km_atual());
-            Double kmBefore = Double.parseDouble(abastBefore.getAbastecimento_km_atual());
-            kmRodada = kmAtual - kmBefore;
+        //Lógica para calcular o valor da km rodada
+        if (position < abastecimentos.size()) {
+            if ((position + 1) < abastecimentos.size()) {
+                Abastecimento abastTemp = abastecimentos.get(position + 1);
+                if (abastTemp != null) {
+                    Abastecimento abastNext = abastController.getAbastByID(abastTemp.getAbastecimento_id());
+                    if (abastNext != null) {
+                        Double kmAtual = Double.parseDouble(abast.getAbastecimento_km_atual());
+                        Double kmNext = Double.parseDouble(abastNext.getAbastecimento_km_atual());
+                        kmRodada = kmNext - kmAtual;
+                    }
+                }
+            }
         }
 
         vh.txtData.setText(abast.getAbastecimento_data());

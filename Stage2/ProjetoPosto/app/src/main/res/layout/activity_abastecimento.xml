@@ -25,11 +25,12 @@
 
         <ImageView
             android:id="@+id/img_abastecimento_veiculo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/textViewAbastecimento"
             android:layout_margin="@dimen/dimen_20"
+            android:layout_toEndOf="@+id/textViewVeicComb"
             android:contentDescription="@string/text_veiculo_imagem" />
 
         <Button
@@ -37,8 +38,8 @@
             style="@style/MediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_abastecimento_veiculo"
-            android:layout_margin="@dimen/margin_ten"
+            android:layout_below="@+id/textViewAbastecimento"
+            android:layout_marginTop="@dimen/dimen_75"
             android:background="@color/colorAccent"
             android:textColor="@color/colorPrimaryDark"
             tools:text="@string/mock_data" />
@@ -137,7 +138,9 @@
             android:layout_height="@dimen/dimen_40"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/edt_abastecimento_valor"
-            android:layout_margin="@dimen/margin_ten"
+            android:layout_marginEnd="@dimen/margin_ten"
+            android:layout_marginStart="@dimen/margin_ten"
+            android:layout_marginTop="@dimen/dimen_15"
             android:layout_toEndOf="@+id/textViewChoosePosto" />
 
         <TextView

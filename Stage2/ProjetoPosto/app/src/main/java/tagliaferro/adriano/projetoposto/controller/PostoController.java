@@ -144,7 +144,7 @@ public class PostoController implements MainController<Posto> {
         try {
             Posto posto = new Posto();
             Uri postoUri = PostoContract.Columns.getUriWithPostoID(id);
-            cursor = context.getContentResolver().query(postoUri, null, null, null, null);
+            cursor = context.getContentResolver().query(postoUri, null, null, new String[]{String.valueOf(id)}, null);
             if(cursor.moveToFirst()){
                 posto.setPosto_id(id);
                 posto.setPosto_nome(cursor.getString(cursor.getColumnIndex(PostoContract.Columns.posto_nome)));

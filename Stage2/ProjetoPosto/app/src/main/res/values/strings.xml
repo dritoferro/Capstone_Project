@@ -55,6 +55,7 @@
     <string name="valor">Valor:</string>
     <string name="exemplo_valor">R$ 50,00</string>
     <string name="update_abast_key">veiculo_abast_key</string>
+    <string name="del_abastecimento">Tem certeza que deseja excluir este abastecimento ?</string>
 
 
     <string-array name="combs">

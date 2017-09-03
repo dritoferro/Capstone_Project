@@ -11,4 +11,5 @@
     <dimen name="dimen_100">100dp</dimen>
     <dimen name="dimen_15">15dp</dimen>
     <dimen name="dimen_130">130dp</dimen>
+    <dimen name="dimen_75">75dp</dimen>
 </resources>
