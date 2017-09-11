@@ -64,7 +64,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         if(obj.getAbastecimento_data().isEmpty()){
             return false;
         }
-        if(obj.getAbastecimento_comb().isEmpty()){
+        if(obj.getAbastecimento_comb().isEmpty() || obj.getAbastecimento_comb().equals(context.getString(R.string.select))){
             return false;
         }
         if(obj.getAbastecimento_km_atual().isEmpty()){
@@ -101,7 +101,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         int ret = 0;
         try {
             Uri uriDelete = AbastecimentoContract.Columns.getUriWithAbastID(obj);
-            context.getContentResolver().delete(uriDelete, AbastecimentoContract.Columns.abastecimento_id + " = ?", new String[]{String.valueOf(obj)});
+            ret = context.getContentResolver().delete(uriDelete, AbastecimentoContract.Columns.abastecimento_id + " = ?", new String[]{String.valueOf(obj)});
 
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

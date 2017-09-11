@@ -275,6 +275,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 mVeiculo = veiculosList.get(position - 1);
                 //Adiciona os combustíveis do veículo ao spinner
                 veicCombList.clear();
+                veicCombList.add(getString(R.string.select));
                 if (!mVeiculo.getVeiculo_comb1().equals(getString(R.string.select))) {
                     veicCombList.add(mVeiculo.getVeiculo_comb1());
                 }

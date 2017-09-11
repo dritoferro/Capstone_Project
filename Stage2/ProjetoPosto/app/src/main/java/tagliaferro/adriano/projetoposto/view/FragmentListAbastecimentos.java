@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import tagliaferro.adriano.projetoposto.controller.Abastecimento;
 import tagliaferro.adriano.projetoposto.controller.AbastecimentoController;
 import tagliaferro.adriano.projetoposto.controller.AbastecimentosAdapter;
 import tagliaferro.adriano.projetoposto.controller.OnDataSelected;
+import tagliaferro.adriano.projetoposto.controller.Updates;
 
 /**
  * Created by Adriano2 on 13/07/2017.
@@ -40,6 +42,7 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
     private List<Abastecimento> mAbastecimentosList;
     private AbastecimentoController abastController;
     private AbastecimentosAdapter abastAdapter;
+    private int idVeiculo;
 
     @Nullable
     @Override
@@ -57,7 +60,7 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        int idVeiculo = getArguments() != null ? getArguments().getInt(getString(R.string.update_abast_key)) : -1;
+        idVeiculo = getArguments() != null ? getArguments().getInt(getString(R.string.update_abast_key)) : -1;
         abastController = new AbastecimentoController(getActivity());
 
         if (idVeiculo != -1) {
@@ -89,10 +92,6 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
                         return 0;
                     }
                 });
-                //DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
-                //for (int i = 0; i < mAbastecimentosList.size(); i++) {
-                //    String data = "";
-                //}
                 abastAdapter = new AbastecimentosAdapter(getActivity(), mAbastecimentosList, this);
                 mRecyclerView.setAdapter(abastAdapter);
             }
@@ -113,7 +112,6 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
         buildAlerts(getString(R.string.warning), getString(R.string.del_abastecimento),
                 mAbastecimentosList.get(position).getAbastecimento_id());
 
-
     }
 
     public void buildAlerts(String title, String msg, final int id_abast) {
@@ -128,6 +126,7 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
                     int ret = abastController.delete(id_abast);
                     if (ret != 0) {
                         Toast.makeText(getActivity(), R.string.del_sucesso, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new MainActivity(idVeiculo));
                     }
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -136,4 +135,5 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
         });
         ask.show();
     }
+
 }

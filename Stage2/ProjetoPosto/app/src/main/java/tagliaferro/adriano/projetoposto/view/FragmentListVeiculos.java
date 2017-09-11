@@ -1,7 +1,5 @@
 package tagliaferro.adriano.projetoposto.view;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -67,10 +64,10 @@ public class FragmentListVeiculos extends Fragment implements OnDataSelected {
 
     @Override
     public void onDataSelected(View view, int position) {
-        //Toast.makeText(getActivity(), mVeiculos.get(position).getVeiculo_nome(), Toast.LENGTH_SHORT).show();
         mUpdates.updateListAbastecimentos(mVeiculos.get(position).getVeiculo_id());
     }
 
     @Override
-    public void onLongDataSelected(View view, int position) {}
+    public void onLongDataSelected(View view, int position) {
+    }
 }

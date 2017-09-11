@@ -54,6 +54,10 @@ dependencies {
     //Material Calendar View
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     //End of Material Calendar View
+
+    //EventBUS
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //End of EventBUS
 }
 
 //Apply plugin Google Play Services
