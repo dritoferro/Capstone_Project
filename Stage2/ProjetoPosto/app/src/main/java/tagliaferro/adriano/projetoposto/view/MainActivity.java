@@ -17,6 +17,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -116,8 +118,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Calcular a km rodada no mês e o valor gasto
         mAbastecimentoList = abastController.query(id_veiculo);
         if (!mAbastecimentoList.isEmpty()) {
+            //Aqui é feita a ordenação da lista de abastecimento de acordo com a data.
+            Collections.sort(mAbastecimentoList, new Comparator<Abastecimento>() {
+                @Override
+                public int compare(Abastecimento o1, Abastecimento o2) {
+                    DateFormat format = DateFormat.getDateInstance(DateFormat.DATE_FIELD, Locale.getDefault());
+                    try {
+                        Date data1 = format.parse(o1.getAbastecimento_data());
+                        Date data2 = format.parse(o2.getAbastecimento_data());
+                        if (data1.before(data2)) {
+                            return -1;
+                        } else if (data1.after(data2)) {
+                            return 1;
+                        } else if (data1.equals(data2)) {
+                            if (o1.getAbastecimento_id() < o2.getAbastecimento_id()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    return 0;
+                }
+            });
             try {
-                Double kmInicial = 0.0, kmFinal = 0.0, kmMes = 0.0, valorMes = 0.0;
+                Double kmInicial = 0.0, kmFinal = 0.0, kmMes, valorMes = 0.0;
                 int mesAtual, anoAtual, mesAbast, anoAbast;
                 DateFormat format = DateFormat.getDateInstance(DateFormat.DATE_FIELD, Locale.getDefault());
                 Date dataAtual = new Date();
@@ -137,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (anoAtual == anoAbast && mesAtual == mesAbast) {
                         valorMes += Double.parseDouble(mAbastecimentoList.get(i).getAbastecimento_valor());
                     }
-                    if (i == mAbastecimentoList.size() - 1) {
+                    if (i == (mAbastecimentoList.size() - 1)) {
                         dataAbast = format.parse(mAbastecimentoList.get(i).getAbastecimento_data());
                         calendar.setTime(dataAbast);
                         mesAbast = calendar.get(Calendar.MONTH);

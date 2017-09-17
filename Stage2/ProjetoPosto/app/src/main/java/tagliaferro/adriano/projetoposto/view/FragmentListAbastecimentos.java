@@ -94,6 +94,8 @@ public class FragmentListAbastecimentos extends Fragment implements OnDataSelect
                 });
                 abastAdapter = new AbastecimentosAdapter(getActivity(), mAbastecimentosList, this);
                 mRecyclerView.setAdapter(abastAdapter);
+                //Para exibir o último registro de abastecimento
+                mRecyclerView.scrollToPosition(mAbastecimentosList.size() - 1);
             }
         }
     }
