@@ -22,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -80,6 +79,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
     private boolean hasVeiculo = true;
     private boolean isUpdate = false;
+    private int isUpdating = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,11 +172,20 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 if (p.getPosto_id() == mAbastecimento.getAbastecimento_posto_id()) {
                     mPosto = p;
                     spinnerPosto.setSelection(postoAdapter.getPosition(mPosto.getPosto_nome()));
+                    //Adiciona os combustíveis na lista de seleção.
+                    veicCombList.clear();
+                    veicCombList.add(getString(R.string.select));
+                    veicCombList.add(mPosto.getPosto_comb1() != getString(R.string.select) ? mPosto.getPosto_comb1() : null);
+                    veicCombList.add(mPosto.getPosto_comb2() != getString(R.string.select) ? mPosto.getPosto_comb2() : null);
+                    veicCombAdapter.notifyDataSetChanged();
+                    int positionObj = veicCombAdapter.getPosition(mAbastecimento.getAbastecimento_comb());
+                    spinnerVeicComb.setSelection(positionObj);
                 }
             }
             if (!mVeiculo.getVeiculo_imagem().isEmpty()) {
                 Glide.with(this).load(mVeiculo.getVeiculo_imagem()).into(imgVeiculo);
             }
+            edtValor.setText(mAbastecimento.getAbastecimento_valor());
         } else {
             //Caso seja um novo cadastro, coloque a data atual no botão de data.
             //dataAbastecimento = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()).format(new Date());
@@ -269,7 +278,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //Verifica se foi selecionado um veículo ou um posto respectivamente.
         //A position - 1 é o objeto verdadeiro, pois na lista de nomes, o primeiro objeto é o "selecione".
-        if (parent.getId() == spinnerVeiculo.getId()) {
+        if (parent.getId() == spinnerVeiculo.getId() && isUpdating == 3) {
             //Verifica se o veículo selecionado é diferente de "selecione", se sim, obtem o mesmo na lista.
             if (!spinnerVeiculo.getSelectedItem().toString().equals(getString(R.string.select))) {
                 mVeiculo = veiculosList.get(position - 1);
@@ -295,8 +304,10 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 veicCombList.add(getString(R.string.select));
                 veicCombAdapter.notifyDataSetChanged();
             }
+        } else if (isUpdating == 1 || isUpdating == 2) {
+            isUpdating++;
         } else if (parent.getId() == spinnerPosto.getId()) {
-            //Verifica se o posto selecionado é diferente de "selecione", se sim, obtem o mesmo na lista.
+            //Verifica se o posto selecionado é diferente de "selecione", se sim, obtêm o mesmo na lista.
             if (!spinnerPosto.getSelectedItem().toString().equals(getString(R.string.select))) {
                 mPosto = postosList.get(position - 1);
                 if (spinnerVeicComb.getSelectedItem().equals(mPosto.getPosto_comb1())) {

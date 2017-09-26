@@ -182,6 +182,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         String kmAtual;
         String valorLitro;
         String valor;
+        String comb;
         int idPosto;
         int idVeiculo;
         int idAbast;
@@ -193,6 +194,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         kmAtual = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_km_atual));
         valorLitro = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_valor_litro));
         valor = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_valor));
+        comb = cursor.getString(cursor.getColumnIndex(AbastecimentoContract.Columns.abastecimento_comb));
 
         abast = new Abastecimento();
         abast.setAbastecimento_id(idAbast);
@@ -202,6 +204,7 @@ public class AbastecimentoController implements MainController<Abastecimento> {
         abast.setAbastecimento_km_atual(kmAtual);
         abast.setAbastecimento_valor_litro(valorLitro);
         abast.setAbastecimento_valor(valor);
+        abast.setAbastecimento_comb(comb);
 
         return abast;
     }

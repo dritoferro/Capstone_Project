@@ -2,6 +2,7 @@ package tagliaferro.adriano.projetoposto.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +67,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
     private final int ALERT_TYPE_ERROR = 2;
     private final int ALERT_TYPE_PHOTO = 3;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 5;
+    private static final int PICK_IMAGE = 6;
 
     private static Uri outputFileUri;
     private RequestOptions options;
@@ -258,7 +264,13 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
             ask.setNegativeButton(R.string.btn_galeria, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //TODO implementar a função de pegar a foto na galeria.
+                    if (!edtNome.getText().toString().isEmpty()) {
+                        Intent i = new Intent(Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                        startActivityForResult(Intent.createChooser(i, "Selecione uma imagem"), PICK_IMAGE);
+                    } else {
+                        buildAlerts(getString(R.string.warning), getString(R.string.error_nome_veiculo), ALERT_TYPE_ERROR);
+                    }
                 }
             });
         }
@@ -275,6 +287,47 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                     .apply(options)
                     .into(imgVeiculo);
         }
+
+        if (requestCode == PICK_IMAGE && resultCode != RESULT_CANCELED) {
+            try {
+                outputFileUri = data.getData();
+                File src = new File(getRealPathFromURI(outputFileUri));
+                File dest = getOutputMediaFile(edtNome.getText().toString());
+                copy(src, dest);
+                Glide.with(this).load(dest)
+                        .apply(options)
+                        .into(imgVeiculo);
+            } catch (IOException e) {
+                buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
+            }
+
+        }
+    }
+
+    //Método para criar uma cópia da imagem da galeria para ser salva junta as outras fotos do app.
+    public void copy(File src, File dst) throws IOException {
+        FileInputStream inStream = new FileInputStream(src);
+        FileOutputStream outStream = new FileOutputStream(dst);
+        FileChannel inChannel = inStream.getChannel();
+        FileChannel outChannel = outStream.getChannel();
+        inChannel.transferTo(0, inChannel.size(), outChannel);
+        inStream.close();
+        outStream.close();
+    }
+
+    //Extrair o real caminho da foto para realizar a cópia.
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
     private static File getOutputMediaFile(String veiculo) {

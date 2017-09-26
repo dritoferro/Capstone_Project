@@ -238,7 +238,7 @@ public class ControleProvider extends ContentProvider {
 
                 case CODE_ABASTECIMENTO_WITH_ID:
                     rowUpdated = db.update(AbastecimentoContract.tbAbastecimento, values,
-                            AbastecimentoContract.Columns.abastecimento_id + " = ?", selectionArgs);
+                           selection, selectionArgs);
                     db.setTransactionSuccessful();
                     break;
 
