@@ -58,6 +58,9 @@
     <string name="del_abastecimento">Tem certeza que deseja excluir este abastecimento ?</string>
     <string name="km_mes_atual">Km Mês Atual:</string>
     <string name="valor_mes_atual">Valor Mês Atual:</string>
+    <string name="msg_change_location">A localização do posto só deve ser obtida se estiver presente no local, deseja salvar a localização atual ?</string>
+    <string name="gps_desabilitado">O GPS deve estar habilitado para obter os dados.</string>
+    <string name="localizacao_obtida_sucesso">Localização obtida com sucesso</string>
 
 
     <string-array name="combs">

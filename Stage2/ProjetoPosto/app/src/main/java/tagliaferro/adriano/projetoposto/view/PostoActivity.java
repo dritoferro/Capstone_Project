@@ -1,8 +1,16 @@
 package tagliaferro.adriano.projetoposto.view;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +21,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +38,8 @@ import tagliaferro.adriano.projetoposto.controller.PostoController;
  * Created by Adriano2 on 18/07/2017.
  */
 
-public class PostoActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-
-    private Toolbar mToolbar;
+public class PostoActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     private EditText edtNome;
     private EditText edtPrecoComb1;
@@ -44,13 +56,15 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     private List<Posto> postos;
     private Posto posto;
 
-    private List<String> postosName;
     private ArrayAdapter<String> combAdapter;
-    private ArrayAdapter<String> postosAdapter;
-    private String location;
-    private boolean isLocationChanged = false;
     private final int ALERT_TYPE_EXCLUIR = 1;
     private final int ALERT_TYPE_ERROR = 2;
+    private final int ALERT_TYPE_LOCATION_CHANGED = 3;
+
+    //Objetos para lidar com a Location.
+    private GoogleApiClient mGoogleApiClient;
+    private String location;
+    private boolean isLocationChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +72,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_posto);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_activity_posto);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar_activity_posto);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,6 +85,16 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         btnSalvar = (Button) findViewById(R.id.btn_posto_salvar);
         btnGetLocation = (Button) findViewById(R.id.btn_posto_get_location);
         btnExcluir = (Button) findViewById(R.id.btn_posto_excluir);
+
+        try {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         loadExtra();
 
@@ -92,14 +116,14 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         controller = new PostoController(this);
         postos = controller.query();
 
-        postosName = new ArrayList<>();
+        List<String> postosName = new ArrayList<>();
         postosName.add(getString(R.string.select));
         if (postos.size() > 0) {
             for (Posto p : postos) {
                 postosName.add(p.getPosto_nome());
             }
         }
-        postosAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, postosName);
+        ArrayAdapter<String> postosAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, postosName);
         spinnerPostos.setAdapter(postosAdapter);
     }
 
@@ -147,6 +171,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         } else if (v.getId() == btnGetLocation.getId()) {
             //TODO pegar a localização do posto
             isLocationChanged = true;
+            buildAlerts(getString(R.string.warning), getString(R.string.msg_change_location), ALERT_TYPE_LOCATION_CHANGED);
         } else if (v.getId() == btnExcluir.getId()) {
             buildAlerts(getString(R.string.warning), getString(R.string.msg_exc_posto), ALERT_TYPE_EXCLUIR);
         }
@@ -181,7 +206,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
 
             //Limpar o campo do valor do litro referente ao combustível 2
         } else if (parent.getId() == spinnerComb2.getId()) {
-            if(spinnerComb2.getSelectedItem().equals(getString(R.string.select))) {
+            if (spinnerComb2.getSelectedItem().equals(getString(R.string.select))) {
                 edtPrecoComb2.setText("");
             }
         }
@@ -216,8 +241,79 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
             });
         } else if (alert_type == ALERT_TYPE_ERROR) {
             ask.setNeutralButton(R.string.ok, null);
+        } else if (alert_type == ALERT_TYPE_LOCATION_CHANGED) {
+            ask.setNegativeButton(getString(R.string.nao), null);
+            ask.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getLocation();
+                }
+            });
         }
 
         ask.show();
     }
+
+    //Métodos para o funcionamento do Google API Client Location Service.
+    public void getLocation() {
+        try {
+            LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            boolean isGPSOn = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (isGPSOn) {
+                LocationRequest mLocationRequest = LocationRequest.create();
+                mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                mLocationRequest.setInterval(1000);
+                mLocationRequest.setNumUpdates(1);
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                buildAlerts(getString(R.string.warning), getString(R.string.gps_desabilitado), ALERT_TYPE_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.location = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
+        isLocationChanged = true;
+        Toast.makeText(this, R.string.localizacao_obtida_sucesso, Toast.LENGTH_SHORT).show();
+    }
+
 }
