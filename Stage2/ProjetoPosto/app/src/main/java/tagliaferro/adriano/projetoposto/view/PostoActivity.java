@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,9 +63,11 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
     private final int ALERT_TYPE_EXCLUIR = 1;
     private final int ALERT_TYPE_ERROR = 2;
     private final int ALERT_TYPE_LOCATION_CHANGED = 3;
+    private final int ALERT_TYPE_LOCATION_CONFIRM = 4;
 
     //Objetos para lidar com a Location.
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
     private String location;
     private boolean isLocationChanged = false;
 
@@ -170,7 +175,6 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
 
         } else if (v.getId() == btnGetLocation.getId()) {
             //TODO pegar a localização do posto
-            isLocationChanged = true;
             buildAlerts(getString(R.string.warning), getString(R.string.msg_change_location), ALERT_TYPE_LOCATION_CHANGED);
         } else if (v.getId() == btnExcluir.getId()) {
             buildAlerts(getString(R.string.warning), getString(R.string.msg_exc_posto), ALERT_TYPE_EXCLUIR);
@@ -190,6 +194,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 edtPrecoComb2.setText(posto.getPosto_valor_comb2());
                 location = posto.getPosto_localizacao();
                 btnExcluir.setVisibility(View.VISIBLE);
+                Toast.makeText(this, getString(R.string.location_posto_atual).concat(location), Toast.LENGTH_LONG).show();
             } else {
                 edtNome.setText("");
                 edtPrecoComb1.setText("");
@@ -249,6 +254,15 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                     getLocation();
                 }
             });
+        } else if (alert_type == ALERT_TYPE_LOCATION_CONFIRM) {
+            ask.setNegativeButton(getString(R.string.nao), null);
+            ask.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isLocationChanged = true;
+                    Toast.makeText(getApplicationContext(), getString(R.string.localizacao_obtida_sucesso), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         ask.show();
@@ -259,12 +273,31 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         try {
             LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             boolean isGPSOn = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            if (isGPSOn) {
-                LocationRequest mLocationRequest = LocationRequest.create();
+            if (isGPSOn && verificaConexao()) {
+                mLocationRequest = LocationRequest.create();
                 mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                 mLocationRequest.setInterval(1000);
                 mLocationRequest.setNumUpdates(1);
 
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
+                }
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                buildAlerts(getString(R.string.warning), getString(R.string.gps_rede_desabilitado), ALERT_TYPE_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 10) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -276,11 +309,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                     return;
                 }
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            } else {
-                buildAlerts(getString(R.string.warning), getString(R.string.gps_desabilitado), ALERT_TYPE_ERROR);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -311,9 +340,48 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onLocationChanged(Location location) {
-        this.location = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
-        isLocationChanged = true;
-        Toast.makeText(this, R.string.localizacao_obtida_sucesso, Toast.LENGTH_SHORT).show();
+        this.location = findAddress(location.getLatitude(), location.getLongitude());
+        buildAlerts(getString(R.string.warning), getString(R.string.msg_confirm_location).concat(this.location)
+                .concat(getString(R.string.ask_signal)), ALERT_TYPE_LOCATION_CONFIRM);
+    }
+
+    public String findAddress(double latitude, double longitude) {
+        try {
+            String address = new String();
+            Geocoder mGeocoder;
+            Address mAddress;
+            List<Address> mAddressList;
+
+            mGeocoder = new Geocoder(this);
+            mAddressList = mGeocoder.getFromLocation(latitude, longitude, 1);
+            if (mAddressList.size() > 0) {
+                mAddress = mAddressList.get(0);
+                address = mAddress.getAddressLine(0);
+                if(mAddress.getMaxAddressLineIndex() > 0){
+                    for(int i = 1; i < mAddress.getMaxAddressLineIndex(); i++){
+                        address.concat(mAddress.getAddressLine(i));
+                    }
+                }
+            }
+
+
+            return address;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public  boolean verificaConexao() {
+        boolean conectado;
+        ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (conectivtyManager.getActiveNetworkInfo() != null
+                && conectivtyManager.getActiveNetworkInfo().isAvailable()
+                && conectivtyManager.getActiveNetworkInfo().isConnected()) {
+            conectado = true;
+        } else {
+            conectado = false;
+        }
+        return conectado;
     }
 
 }

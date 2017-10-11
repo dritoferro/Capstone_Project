@@ -59,9 +59,13 @@
     <string name="km_mes_atual">Km Mês Atual:</string>
     <string name="valor_mes_atual">Valor Mês Atual:</string>
     <string name="msg_change_location">A localização do posto só deve ser obtida se estiver presente no local, deseja salvar a localização atual ?</string>
-    <string name="gps_desabilitado">O GPS deve estar habilitado para obter os dados.</string>
+    <string name="gps_rede_desabilitado">O GPS e a conexão com a internet devem estar habilitados para obter os dados.</string>
     <string name="localizacao_obtida_sucesso">Localização obtida com sucesso</string>
+    <string name="msg_confirm_location">A localização do posto é:</string>
+    <string name="ask_signal">\?</string>
+    <string name="location_posto_atual">Localização atual:</string>
 
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
     <string-array name="combs">
         <item>@string/select</item>

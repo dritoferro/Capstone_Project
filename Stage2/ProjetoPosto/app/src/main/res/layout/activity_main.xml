@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -55,10 +56,10 @@
 
         <TextView
             android:id="@+id/text_main_km_mes"
+            style="@style/MediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MediumText"
-            tools:text="300"/>
+            tools:text="300" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,10 +75,10 @@
 
         <TextView
             android:id="@+id/text_main_valor_mes"
+            style="@style/MediumText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MediumText"
-            tools:text="140.00"/>
+            tools:text="140.00" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -88,5 +89,13 @@
         android:layout_margin="20dp"
         android:src="@drawable/ic_add"
         app:fabSize="auto" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_main_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
 
 </LinearLayout>

@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtKmMes;
     private TextView txtValorMes;
 
+    private AdView mAdView;
+
     public MainActivity() {
     }
 
@@ -73,10 +78,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabAddAbast = (FloatingActionButton) findViewById(R.id.fab_add_abastecimento);
         fabAddAbast.setOnClickListener(this);
 
+        mAdView = (AdView) findViewById(R.id.ad_main_activity);
+
         abastController = new AbastecimentoController(this);
 
         txtKmMes = (TextView) findViewById(R.id.text_main_km_mes);
         txtValorMes = (TextView) findViewById(R.id.text_main_valor_mes);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
     }
 
