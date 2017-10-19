@@ -194,7 +194,9 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 edtPrecoComb2.setText(posto.getPosto_valor_comb2());
                 location = posto.getPosto_localizacao();
                 btnExcluir.setVisibility(View.VISIBLE);
-                Toast.makeText(this, getString(R.string.location_posto_atual).concat(location), Toast.LENGTH_LONG).show();
+                if(location != null){
+                    Toast.makeText(this, getString(R.string.location_posto_atual).concat(location), Toast.LENGTH_LONG).show();
+                }
             } else {
                 edtNome.setText("");
                 edtPrecoComb1.setText("");

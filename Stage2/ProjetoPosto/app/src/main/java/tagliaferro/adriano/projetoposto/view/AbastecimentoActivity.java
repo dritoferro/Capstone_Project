@@ -40,6 +40,7 @@ import tagliaferro.adriano.projetoposto.controller.Posto;
 import tagliaferro.adriano.projetoposto.controller.PostoController;
 import tagliaferro.adriano.projetoposto.controller.Veiculo;
 import tagliaferro.adriano.projetoposto.controller.VeiculoController;
+import tagliaferro.adriano.projetoposto.model.FireDatabase;
 
 /**
  * Created by Adriano2 on 18/07/2017.
@@ -81,6 +82,8 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     private boolean isUpdate = false;
     private int isUpdating = 1;
 
+    private FireDatabase mFirebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +121,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         veiculosList = new ArrayList<>();
         postosList = new ArrayList<>();
         veicCombList = new ArrayList<>();
+        mFirebase = new FireDatabase();
 
         veiculosList = veicController.query();
         //Verifica se há veiculos cadastrados, caso não haja, redireciona para tela de cadastro.
@@ -251,6 +255,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 if (e.getMessage().equals(getString(R.string.add_sucesso))) {
                     mAbastecimento = null;
                     dataAbastecimento = null;
+                    mFirebase.sendData(mPosto);
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     Intent principal = new Intent(this, MainActivity.class);
                     startActivity(principal);
