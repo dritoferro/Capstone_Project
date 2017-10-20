@@ -83,6 +83,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     private int isUpdating = 1;
 
     private FireDatabase mFirebase;
+    private FireAuth mFireAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         postosList = new ArrayList<>();
         veicCombList = new ArrayList<>();
         mFirebase = new FireDatabase();
+        mFireAuth = new FireAuth();
 
         veiculosList = veicController.query();
         //Verifica se há veiculos cadastrados, caso não haja, redireciona para tela de cadastro.
@@ -255,7 +257,10 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 if (e.getMessage().equals(getString(R.string.add_sucesso))) {
                     mAbastecimento = null;
                     dataAbastecimento = null;
-                    mFirebase.sendData(mPosto);
+                    String userId = mFireAuth.checkLogin();
+                    if(userId != null) {
+                        mFirebase.sendData(mPosto);
+                    }
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     Intent principal = new Intent(this, MainActivity.class);
                     startActivity(principal);
