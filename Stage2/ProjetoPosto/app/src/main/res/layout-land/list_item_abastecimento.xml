@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_below="@id/text_list_abast_km_rodada"
-        android:background="@color/linkColor"
         android:layout_marginTop="@dimen/margin_ten"
-        android:layout_marginEnd="@dimen/margin_ten"/>
+        android:layout_marginEnd="@dimen/margin_ten"
+        android:background="@color/linkColor" />
 </RelativeLayout>

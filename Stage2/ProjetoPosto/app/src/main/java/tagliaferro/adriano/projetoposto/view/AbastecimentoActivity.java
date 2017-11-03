@@ -22,6 +22,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -29,6 +32,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -83,7 +87,12 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     private int isUpdating = 1;
 
     private FireDatabase mFirebase;
-    private FireAuth mFireAuth;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+    private static String userID;
+    private final int RC_SIGN_IN = 123;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +132,6 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         postosList = new ArrayList<>();
         veicCombList = new ArrayList<>();
         mFirebase = new FireDatabase();
-        mFireAuth = new FireAuth();
 
         veiculosList = veicController.query();
         //Verifica se há veiculos cadastrados, caso não haja, redireciona para tela de cadastro.
@@ -257,7 +265,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 if (e.getMessage().equals(getString(R.string.add_sucesso))) {
                     mAbastecimento = null;
                     dataAbastecimento = null;
-                    String userId = mFireAuth.checkLogin();
+                    String userId = checkLogin();
                     if(userId != null) {
                         mFirebase.sendData(mPosto);
                     }
@@ -393,5 +401,46 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
         ask.show();
 
+    }
+
+    public String checkLogin() {
+        try {
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user != null) {
+                        //TODO user logged in
+                        userID = user.getUid();
+                    } else {
+                        //TODO user not logged in
+                        startActivityForResult(
+                                AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setAvailableProviders(
+                                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                        .build(),
+                                RC_SIGN_IN);
+                        //TODO criar o provedor e as ferramentas necessárias para logar via Facebook
+                        //new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build())
+
+                    }
+                }
+            };
+
+            mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return userID;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_SIGN_IN) {
+
+        }
     }
 }
