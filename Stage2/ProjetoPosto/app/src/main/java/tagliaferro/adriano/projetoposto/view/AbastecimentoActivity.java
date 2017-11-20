@@ -133,6 +133,8 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         veicCombList = new ArrayList<>();
         mFirebase = new FireDatabase();
 
+        checkLogin();
+
         veiculosList = veicController.query();
         //Verifica se há veiculos cadastrados, caso não haja, redireciona para tela de cadastro.
         if (!veiculosList.isEmpty()) {
@@ -214,6 +216,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         super.onDestroy();
         mAbastecimento = null;
         dataAbastecimento = null;
+        userID = null;
     }
 
     @Override
@@ -247,6 +250,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                     mAbastecimento = new Abastecimento();
                     isUpdate = false;
                     buildAbastecimento();
+                    if (userID != null && mPosto.getPosto_localizacao() != null) {
+                        mFirebase.sendData(mPosto);
+                    }
                     AbastController.insert(mAbastecimento);
                 } else {
                     isUpdate = true;
@@ -256,6 +262,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                     if (ret != 0) {
                         Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
                         Intent principal = new Intent(this, MainActivity.class);
+                        principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(principal);
                     } else {
                         buildAlerts(getString(R.string.warning), getString(R.string.erro_update));
@@ -265,12 +272,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                 if (e.getMessage().equals(getString(R.string.add_sucesso))) {
                     mAbastecimento = null;
                     dataAbastecimento = null;
-                    String userId = checkLogin();
-                    if(userId != null) {
-                        mFirebase.sendData(mPosto);
-                    }
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     Intent principal = new Intent(this, MainActivity.class);
+                    principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(principal);
                 } else {
                     buildAlerts(getString(R.string.warning), e.getMessage());
@@ -289,6 +293,17 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         mAbastecimento.setAbastecimento_valor(edtValor.getText().toString());
         if (!isUpdate) {
             mAbastecimento.setAbastecimento_id(-1);
+        }
+        if (mAbastecimento.getAbastecimento_comb().equals(mPosto.getPosto_comb1())) {
+            if (Double.parseDouble(mPosto.getPosto_valor_comb1()) != Double.parseDouble(mAbastecimento.getAbastecimento_valor_litro())) {
+                mPosto.setPosto_valor_comb1(mAbastecimento.getAbastecimento_valor_litro());
+            }
+        }
+
+        if (mAbastecimento.getAbastecimento_comb().equals(mPosto.getPosto_comb2())) {
+            if (Double.parseDouble(mPosto.getPosto_valor_comb2()) != Double.parseDouble(mAbastecimento.getAbastecimento_valor_litro())) {
+                mPosto.setPosto_valor_comb2(mAbastecimento.getAbastecimento_valor_litro());
+            }
         }
     }
 
@@ -403,7 +418,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    public String checkLogin() {
+    public void checkLogin() {
         try {
             mFirebaseAuth = FirebaseAuth.getInstance();
             mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -434,7 +449,6 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-        return userID;
     }
 
     @Override

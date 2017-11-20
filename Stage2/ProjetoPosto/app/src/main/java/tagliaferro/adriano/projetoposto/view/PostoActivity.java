@@ -153,6 +153,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                     controller.insert(posto);
                     Toast.makeText(this, getString(R.string.add_sucesso), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } catch (Exception e) {
                     buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
@@ -164,6 +165,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                     if (ret != 0) {
                         Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
                         buildAlerts(getString(R.string.warning), getString(R.string.erro_update), ALERT_TYPE_ERROR);
@@ -194,7 +196,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                 edtPrecoComb2.setText(posto.getPosto_valor_comb2());
                 location = posto.getPosto_localizacao();
                 btnExcluir.setVisibility(View.VISIBLE);
-                if(location != null){
+                if (location != null) {
                     Toast.makeText(this, getString(R.string.location_posto_atual).concat(location), Toast.LENGTH_LONG).show();
                 }
             } else {
@@ -239,6 +241,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
                         if (ret != 0) {
                             Toast.makeText(getApplicationContext(), R.string.del_sucesso, Toast.LENGTH_SHORT).show();
                             Intent principal = new Intent(getApplicationContext(), MainActivity.class);
+                            principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(principal);
                         }
                     } catch (Exception e) {
@@ -359,8 +362,8 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
             if (mAddressList.size() > 0) {
                 mAddress = mAddressList.get(0);
                 address = mAddress.getAddressLine(0);
-                if(mAddress.getMaxAddressLineIndex() > 0){
-                    for(int i = 1; i < mAddress.getMaxAddressLineIndex(); i++){
+                if (mAddress.getMaxAddressLineIndex() > 0) {
+                    for (int i = 1; i < mAddress.getMaxAddressLineIndex(); i++) {
                         address.concat(mAddress.getAddressLine(i));
                     }
                 }
@@ -373,7 +376,7 @@ public class PostoActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public  boolean verificaConexao() {
+    public boolean verificaConexao() {
         boolean conectado;
         ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (conectivtyManager.getActiveNetworkInfo() != null

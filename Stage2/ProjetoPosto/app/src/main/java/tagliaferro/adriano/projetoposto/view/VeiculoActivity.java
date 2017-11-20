@@ -162,6 +162,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                     if (e.getMessage().equals(getString(R.string.add_sucesso))) {
                         Toast.makeText(this, getString(R.string.add_sucesso), Toast.LENGTH_SHORT).show();
                         Intent principal = new Intent(this, MainActivity.class);
+                        principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(principal);
                     } else {
                         buildAlerts(getString(R.string.warning), e.getMessage(), ALERT_TYPE_ERROR);
@@ -173,6 +174,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                 if (ret != 0) {
                     Toast.makeText(this, getString(R.string.up_sucesso), Toast.LENGTH_SHORT).show();
                     Intent principal = new Intent(this, MainActivity.class);
+                    principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(principal);
                 } else {
                     buildAlerts(getString(R.string.warning), getString(R.string.erro_update), ALERT_TYPE_ERROR);
@@ -235,6 +237,7 @@ public class VeiculoActivity extends AppCompatActivity implements View.OnClickLi
                         if (ret != 0) {
                             Toast.makeText(getApplicationContext(), R.string.del_sucesso, Toast.LENGTH_SHORT).show();
                             Intent principal = new Intent(getApplicationContext(), MainActivity.class);
+                            principal.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(principal);
                         }
                     } catch (Exception e) {
