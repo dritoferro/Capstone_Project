@@ -2,6 +2,7 @@ package tagliaferro.adriano.projetoposto.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import java.util.Locale;
 import tagliaferro.adriano.projetoposto.R;
 import tagliaferro.adriano.projetoposto.controller.Abastecimento;
 import tagliaferro.adriano.projetoposto.controller.AbastecimentoController;
+import tagliaferro.adriano.projetoposto.controller.MyFirebaseInstanceIDService;
+import tagliaferro.adriano.projetoposto.controller.MyFirebaseMessaging;
 import tagliaferro.adriano.projetoposto.controller.Updates;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Updates {
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView txtValorMes;
 
     private AdView mAdView;
+
 
     public MainActivity() {
     }
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+
 
     }
 
@@ -210,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        startService(new Intent(this, MyFirebaseMessaging.class));
     }
 
     @Override

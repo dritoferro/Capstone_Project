@@ -40,6 +40,7 @@ import java.util.Locale;
 import tagliaferro.adriano.projetoposto.R;
 import tagliaferro.adriano.projetoposto.controller.Abastecimento;
 import tagliaferro.adriano.projetoposto.controller.AbastecimentoController;
+import tagliaferro.adriano.projetoposto.controller.MyFirebaseInstanceIDService;
 import tagliaferro.adriano.projetoposto.controller.Posto;
 import tagliaferro.adriano.projetoposto.controller.PostoController;
 import tagliaferro.adriano.projetoposto.controller.Veiculo;
@@ -428,6 +429,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                     if (user != null) {
                         //TODO user logged in
                         userID = user.getUid();
+                        MyFirebaseInstanceIDService service = new MyFirebaseInstanceIDService();
+                        startService(new Intent(getApplicationContext(), MyFirebaseInstanceIDService.class));
+                        service.checkToken(getApplicationContext());
                     } else {
                         //TODO user not logged in
                         startActivityForResult(
@@ -454,7 +458,9 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_SIGN_IN) {
-
+            MyFirebaseInstanceIDService service = new MyFirebaseInstanceIDService();
+            startService(new Intent(this, MyFirebaseInstanceIDService.class));
+            service.checkToken(this);
         }
     }
 }
