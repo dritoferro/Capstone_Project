@@ -70,6 +70,8 @@
     <string name="pref_token">token_value</string>
     <string name="pref_token_key">token2_value_key</string>
     <string name="pref_token_sent">token2_sent</string>
+    <string name="widget_km_rodada">Km rodada neste mês</string>
+    <string name="widget_valor_mes">Valor gasto neste mês</string>
 
     <string-array name="combs">
         <item>@string/select</item>

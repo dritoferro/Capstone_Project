@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +32,9 @@ public class VeiculoController implements MainController<Veiculo> {
                 Uri uriInsert = VeiculoContract.Columns.CONTENT_URI;
                 Uri uriInserted = context.getContentResolver().insert(uriInsert, values);
                 int newId = Integer.parseInt(uriInserted.getLastPathSegment());
-                if(newId != -1) {
+                if (newId != -1) {
                     throw new RuntimeException(context.getString(R.string.add_sucesso));
-                }  else {
+                } else {
                     throw new RuntimeException(context.getString(R.string.erro_insert));
                 }
             } catch (Exception e) {
