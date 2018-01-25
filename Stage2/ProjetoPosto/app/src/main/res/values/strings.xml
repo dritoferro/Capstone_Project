@@ -72,6 +72,8 @@
     <string name="pref_token_sent">token2_sent</string>
     <string name="widget_km_rodada">Km rodada neste mês</string>
     <string name="widget_valor_mes">Valor gasto neste mês</string>
+    <string name="widget_btn_add">ADD</string>
+    <string name="key_widgets_id">widgets_id</string>
 
     <string-array name="combs">
         <item>@string/select</item>

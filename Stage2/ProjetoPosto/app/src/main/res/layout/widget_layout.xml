@@ -1,77 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/widget_btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/LargeText"
+        android:text="@string/widget_btn_add"
+        android:layout_gravity="end"/>
+
     <ListView
         android:id="@+id/widget_list_veiculos"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_15"
-        android:background="@color/colorPrimaryDark" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_km_rodada" />
-
-            <TextView
-                android:id="@+id/widget_text_km"
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="500.50" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/widget_valor_mes" />
-
-            <TextView
-                android:id="@+id/widget_text_valor"
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="300,00" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/widget_fab_add"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add"
-        app:fabSize="auto" />
+        tools:listitem="@layout/widget_list_items"/>
 
 </LinearLayout>

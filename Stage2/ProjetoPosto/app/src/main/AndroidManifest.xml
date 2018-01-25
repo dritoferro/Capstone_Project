@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,7 +43,8 @@
 
         <provider
             android:name=".model.ControleProvider"
-            android:authorities="tagliaferro.adriano.projetoposto" />
+            android:authorities="tagliaferro.adriano.projetoposto"
+            android:exported="true"/>
 
         <service android:name=".controller.MyFirebaseInstanceIDService">
             <intent-filter>
@@ -65,19 +67,20 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark" />
 
-        <receiver android:name=".widget.PostoWidgetProvider">
+        <receiver android:name=".widget.PostoWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/simple_widget_info" />
+
         </receiver>
 
         <service android:name=".widget.PostoRemoteViewService"
-            android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
 
     </application>
 
