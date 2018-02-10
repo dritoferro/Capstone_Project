@@ -18,6 +18,8 @@ import tagliaferro.adriano.projetoposto.view.MainActivity;
 
 public class PostoWidgetProvider extends AppWidgetProvider {
 
+    public static final String WIDGET_IDPROVIDER_KEYS = "controle_posto_widget_id_keys";
+
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -40,5 +42,17 @@ public class PostoWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(id, views);
 
         }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if(intent.hasExtra(WIDGET_IDPROVIDER_KEYS)){
+            int[] ids = intent.getExtras().getIntArray(WIDGET_IDPROVIDER_KEYS);
+            this.onUpdate(context.getApplicationContext(), AppWidgetManager.getInstance(context.getApplicationContext()), ids);
+        }else {
+            super.onReceive(context, intent);
+        }
+
+
     }
 }

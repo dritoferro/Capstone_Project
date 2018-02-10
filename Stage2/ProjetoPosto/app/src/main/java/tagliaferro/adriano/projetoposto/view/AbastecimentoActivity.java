@@ -1,6 +1,9 @@
 package tagliaferro.adriano.projetoposto.view;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +49,7 @@ import tagliaferro.adriano.projetoposto.controller.PostoController;
 import tagliaferro.adriano.projetoposto.controller.Veiculo;
 import tagliaferro.adriano.projetoposto.controller.VeiculoController;
 import tagliaferro.adriano.projetoposto.model.FireDatabase;
+import tagliaferro.adriano.projetoposto.widget.PostoWidgetProvider;
 
 /**
  * Created by Adriano2 on 18/07/2017.
@@ -213,6 +217,21 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
+    protected void onPause() {
+        updateWidget(getApplicationContext());
+        super.onPause();
+    }
+
+    public void updateWidget(Context context){
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+        int[] ids = widgetManager.getAppWidgetIds(new ComponentName(context, PostoWidgetProvider.class));
+        Intent updateWidgets = new Intent();
+        updateWidgets.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateWidgets.putExtra(PostoWidgetProvider.WIDGET_IDPROVIDER_KEYS, ids);
+        context.sendBroadcast(updateWidgets);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mAbastecimento = null;
@@ -252,7 +271,7 @@ public class AbastecimentoActivity extends AppCompatActivity implements View.OnC
                     isUpdate = false;
                     buildAbastecimento();
                     if (userID != null && mPosto.getPosto_localizacao() != null) {
-                        mFirebase.sendData(mPosto);
+                        mFirebase.sendData(mPosto, getApplicationContext());
                     }
                     AbastController.insert(mAbastecimento);
                 } else {

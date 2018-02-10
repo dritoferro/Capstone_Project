@@ -64,16 +64,17 @@
     <string name="msg_confirm_location">A localização do posto é:</string>
     <string name="ask_signal">\?</string>
     <string name="location_posto_atual">Localização atual:</string>
+    <string name="pref_send_data_firebase" translatable="false">Data</string>
 
 
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="pref_token">token_value</string>
-    <string name="pref_token_key">token2_value_key</string>
-    <string name="pref_token_sent">token2_sent</string>
+    <string name="pref_token" translatable="false">token_value</string>
+    <string name="pref_token_key" translatable="false">token2_value_key</string>
+    <string name="pref_token_sent" translatable="false">token2_sent</string>
     <string name="widget_km_rodada">Km rodada neste mês</string>
     <string name="widget_valor_mes">Valor gasto neste mês</string>
     <string name="widget_btn_add">ADD</string>
-    <string name="key_widgets_id">widgets_id</string>
+    <string name="key_widgets_id" translatable="false">widgets_id</string>
 
     <string-array name="combs">
         <item>@string/select</item>

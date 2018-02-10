@@ -24,7 +24,7 @@
     <FrameLayout
         android:id="@+id/frameListVeiculos"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="@dimen/dimen_70">
 
     </FrameLayout>
 
@@ -37,7 +37,7 @@
     <FrameLayout
         android:id="@+id/frameListAbastecimentos"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="@dimen/dimen_80">
 
     </FrameLayout>
 
